@@ -12,6 +12,14 @@
     <artifactId>swingGUI</artifactId>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.jtattoo</groupId>
+            <artifactId>JTattoo</artifactId>
+            <version>1.6.10</version>
+        </dependency>
+    </dependencies>
+
     <name>swingGUI</name>
 
     <properties>
