@@ -13,7 +13,7 @@ import java.util.Currency;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "creditOffer")
-public class CreditOfferImpl implements CreditOffer {
+class CreditOfferImpl implements CreditOffer {
 
     @XmlElement
     private String name;
