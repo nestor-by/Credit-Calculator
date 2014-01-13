@@ -1,5 +1,7 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import java.util.Currency;
+
 /**
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
@@ -8,6 +10,7 @@ package su.ugatu.moodle.is.credit_calc;
 class BankImpl implements Bank {
 
     private final String name;
+    protected Currency defaultCurrency;
 
     public BankImpl(String name) {
         this.name = name;
@@ -16,5 +19,9 @@ class BankImpl implements Bank {
     @Override
     public String getName() {
         return name;
+    }
+
+    public Currency getDefaultCurrency() {
+        return defaultCurrency;
     }
 }

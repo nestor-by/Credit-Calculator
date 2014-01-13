@@ -2,6 +2,7 @@
 <banks>
     <bank>
         <name>GE Money Bank</name>
+        <defaultCurrency>RUB</defaultCurrency>
         <creditOffer>
             <name>Особый</name>
             <minRate>0.139</minRate>
@@ -19,6 +20,7 @@
     </bank>
     <bank>
         <name>Альфа-Банк</name>
+        <defaultCurrency>RUB</defaultCurrency>
         <creditOffer>
             <name>Просто</name>
             <minRate>0.1699</minRate>
