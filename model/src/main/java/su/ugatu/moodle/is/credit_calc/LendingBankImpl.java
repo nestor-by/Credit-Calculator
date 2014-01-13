@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Currency;
 import java.util.List;
 
 /**
@@ -17,9 +18,11 @@ class LendingBankImpl extends BankImpl implements LendingBank {
 
     @XmlElement
     private String name;
+    @XmlElement
+    private String defaultCurrency;
 
     @XmlElement(name = "creditOffer", type = CreditOfferImpl.class)
-    private List<CreditOfferImpl> creditOffers;
+    private List<CreditOffer> creditOffers;
 
     public LendingBankImpl() {
         super(null);
@@ -30,7 +33,12 @@ class LendingBankImpl extends BankImpl implements LendingBank {
         return name;
     }
 
-    List<CreditOfferImpl> getCreditOffers() {
+    List<CreditOffer> getCreditOffers() {
         return creditOffers;
+    }
+
+    @Override
+    public Currency getDefaultCurrency() {
+        return Currency.getInstance(defaultCurrency);
     }
 }

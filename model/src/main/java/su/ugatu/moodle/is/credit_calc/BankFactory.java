@@ -40,9 +40,9 @@ public class BankFactory {
     }
 
     @XmlElement(name = "bank", type = LendingBankImpl.class)
-    private List<LendingBankImpl> banks;
+    private List<LendingBank> banks;
 
-    public List<LendingBankImpl> getBanks() {
+    public List<LendingBank> getBanks() {
         return banks;
     }
 
