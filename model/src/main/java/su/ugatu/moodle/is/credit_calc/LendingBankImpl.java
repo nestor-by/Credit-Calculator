@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
- * @author: rinat.enikeev@gmail.com
+ * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 18:49
  */

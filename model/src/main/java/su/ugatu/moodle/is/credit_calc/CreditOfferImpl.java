@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * @author: rinat.enikeev@gmail.com
+ * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 21:47
  */

@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.List;
 
 /**
- * @author: rinat.enikeev@gmail.com
+ * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 19:30
  */
