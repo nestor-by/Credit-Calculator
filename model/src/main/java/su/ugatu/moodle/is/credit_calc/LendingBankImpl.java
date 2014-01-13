@@ -33,7 +33,7 @@ class LendingBankImpl extends BankImpl implements LendingBank {
         return name;
     }
 
-    List<CreditOffer> getCreditOffers() {
+    public List<CreditOffer> getCreditOffers() {
         return creditOffers;
     }
 
