@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<banks>
+    <bank>
+        <name>GE Money Bank</name>
+        <creditOffer>
+            <name>Особый</name>
+            <minRate>0.139</minRate>
+            <minAmount>20000</minAmount>
+            <maxAmount>1000000</maxAmount>
+            <currencyName>RUB</currencyName>
+        </creditOffer>
+        <creditOffer>
+            <name>Удобный</name>
+            <minRate>0.169</minRate>
+            <minAmount>20000</minAmount>
+            <maxAmount>1000000</maxAmount>
+            <currencyName>RUB</currencyName>
+        </creditOffer>
+    </bank>
+    <bank>
+        <name>Альфа-Банк</name>
+        <creditOffer>
+            <name>Просто</name>
+            <minRate>0.1699</minRate>
+            <minAmount>5000</minAmount>
+            <maxAmount>150000</maxAmount>
+            <currencyName>RUB</currencyName>
+        </creditOffer>
+    </bank>
+</banks>
