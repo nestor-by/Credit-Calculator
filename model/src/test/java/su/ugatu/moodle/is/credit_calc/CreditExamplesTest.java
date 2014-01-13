@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Currency;
+
 /**
  * User: Rinat
  * Date: 13.01.14
@@ -15,13 +17,14 @@ public class CreditExamplesTest extends Assert {
 
     @Test
     public void getCreditAmountOnly() {
-        Double  creditAmmount = 100d;
+        Double   creditAmmount = 100d;
+        Currency currency = Currency.getInstance("RUB");
 
         Bank bank = new Bank();
         Customer customer = new Customer();
 
         CreditApplication creditApplication
-                = new CreditApplication(creditAmmount);
+                = new CreditApplication(creditAmmount, currency);
 
         CreditProposal creditProposal
                 = bank.getCreditProposal(customer, creditApplication);
