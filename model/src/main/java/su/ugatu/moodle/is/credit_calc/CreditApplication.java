@@ -11,7 +11,9 @@ public interface CreditApplication {
     Double getAmount();
     Currency getCurrency();
     CreditPaymentType getPaymentType();
+    Integer getDurationInMonths();
 
     CreditApplication setCurrency(final Currency currency);
     CreditApplication setPaymentType(final CreditPaymentType paymentType);
+    CreditApplication setDurationInMonths(final Integer durationInMonths);
 }

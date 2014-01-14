@@ -12,6 +12,7 @@ public class CreditApplicationImpl implements CreditApplication {
     private final Double amount;
     private Currency currency;
     private CreditPaymentType paymentType;
+    private Integer durationInMonths;
 
     public CreditApplicationImpl(final Double amount) {
         this.amount = amount;
@@ -32,13 +33,26 @@ public class CreditApplicationImpl implements CreditApplication {
         return paymentType;
     }
 
+    @Override
+    public Integer getDurationInMonths() {
+        return durationInMonths;
+    }
+
+    @Override
     public CreditApplication setCurrency(final Currency currency) {
         this.currency = currency;
         return this;
     }
 
+    @Override
     public CreditApplication setPaymentType(final CreditPaymentType paymentType) {
         this.paymentType = paymentType;
+        return this;
+    }
+
+    @Override
+    public CreditApplication setDurationInMonths(final Integer durationInMonths) {
+        this.durationInMonths = durationInMonths;
         return this;
     }
 

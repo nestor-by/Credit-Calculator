@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Collection;
 import java.util.Currency;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,6 +37,17 @@ class LendingBankImpl extends BankImpl implements LendingBank {
 
     public Set<CreditOffer> getCreditOffers() {
         return creditOffers;
+    }
+
+    @Override
+    public Collection<CreditProposal> getCreditProposals(final Customer customer,
+                                             final CreditApplication creditApplication) {
+        Set<CreditProposal> proposals = new HashSet<CreditProposal>();
+        for (CreditOffer offer: creditOffers) {
+            CreditProposal creditProposal = offer.calculateProposal(customer, creditApplication);
+            if (creditProposal != null) proposals.add(creditProposal);
+        }
+        return proposals;
     }
 
     @Override

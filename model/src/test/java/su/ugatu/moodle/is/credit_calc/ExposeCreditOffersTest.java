@@ -26,7 +26,9 @@ public class ExposeCreditOffersTest {
                 System.out.print(creditOffer.getMinAmount() + " - ");
                 System.out.print(creditOffer.getMaxAmount() + " ");
                 System.out.print(creditOffer.getCurrency() + ". ");
-                System.out.print("Min rate: " + creditOffer.getMinRate() + ".");
+                System.out.print("Min rate: " + creditOffer.getMinRate() + ". ");
+                System.out.print(creditOffer.getMinMonthDuration() + " - ");
+                System.out.print(creditOffer.getMaxMonthDuration() + " months. ");
                 System.out.println();
             }
         }

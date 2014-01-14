@@ -8,6 +8,8 @@
             <minRate>0.139</minRate>
             <minAmount>20000</minAmount>
             <maxAmount>1000000</maxAmount>
+            <minMonthDuration>12</minMonthDuration>
+            <maxMonthDuration>60</maxMonthDuration>
             <currencyName>RUB</currencyName>
         </creditOffer>
         <creditOffer>
@@ -15,6 +17,8 @@
             <minRate>0.169</minRate>
             <minAmount>20000</minAmount>
             <maxAmount>1000000</maxAmount>
+            <minMonthDuration>12</minMonthDuration>
+            <maxMonthDuration>60</maxMonthDuration>
             <currencyName>RUB</currencyName>
         </creditOffer>
     </bank>
@@ -26,6 +30,8 @@
             <minRate>0.1699</minRate>
             <minAmount>5000</minAmount>
             <maxAmount>150000</maxAmount>
+            <minMonthDuration>12</minMonthDuration>
+            <maxMonthDuration>60</maxMonthDuration>
             <currencyName>RUB</currencyName>
         </creditOffer>
     </bank>

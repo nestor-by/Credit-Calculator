@@ -13,4 +13,18 @@ public interface CreditOffer {
     Double getMaxAmount();
     Double getMinRate();
     Currency getCurrency();
+    Integer getMinMonthDuration();
+    Integer getMaxMonthDuration();
+
+    /**
+     * Calculates {@link CreditProposal} on a given {@link Customer} and
+     * {@link CreditApplication}.
+     *
+     * @param customer incoming customer.
+     * @param creditApplication incoming application.
+     * @return {@link CreditProposal} of {@code null} if application does not
+     * correspond to offer.
+     */
+    CreditProposal calculateProposal(Customer customer,
+                                     CreditApplication creditApplication);
 }

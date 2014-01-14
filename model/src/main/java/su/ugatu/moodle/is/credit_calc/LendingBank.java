@@ -9,4 +9,6 @@ import java.util.Collection;
  */
 public interface LendingBank extends Bank {
     Collection<CreditOffer> getCreditOffers();
+    Collection<CreditProposal> getCreditProposals(Customer customer,
+                                                  CreditApplication creditApplication);
 }

@@ -15,6 +15,8 @@ import java.util.Currency;
 @XmlRootElement(name = "creditOffer")
 class CreditOfferImpl implements CreditOffer {
 
+    private static final CreditPaymentType DEFAULT_PAYMENT_TYPE = CreditPaymentType.ANNUITY;
+
     @XmlElement
     private String name;
     @XmlElement
@@ -25,6 +27,10 @@ class CreditOfferImpl implements CreditOffer {
     private Double minRate;
     @XmlElement
     private String currencyName;
+    @XmlElement
+    private Integer minMonthDuration;
+    @XmlElement
+    private Integer maxMonthDuration;
 
     @Override
     public String getName() {
@@ -51,4 +57,68 @@ class CreditOfferImpl implements CreditOffer {
         return Currency.getInstance(currencyName);
     }
 
+    @Override
+    public Integer getMinMonthDuration() {
+        return minMonthDuration;
+    }
+
+    @Override
+    public Integer getMaxMonthDuration() {
+        return maxMonthDuration;
+    }
+
+    @Override
+    public CreditProposal calculateProposal(final Customer customer,
+                                            final CreditApplication creditApplication) {
+        if(!applicationCorrespondsToOffer(creditApplication)) return null;
+        configureApplicationBlankParams(creditApplication);
+        // todo: create CreditProposal
+        return null;
+    }
+
+    /**
+     * Sets payment type, currency and duration of application to offers values
+     * if some of them or all are null.
+     * @param creditApplication incoming application
+     */
+    private void configureApplicationBlankParams(final CreditApplication creditApplication) {
+        if (creditApplication.getPaymentType() == null) {
+            creditApplication.setPaymentType(DEFAULT_PAYMENT_TYPE);
+        }
+        if (creditApplication.getCurrency() == null) {
+            creditApplication.setCurrency(getCurrency());
+        }
+        if (creditApplication.getDurationInMonths() == null) {
+            creditApplication.setDurationInMonths(getMaxMonthDuration());
+        }
+    }
+
+    /**
+     * Checks if applications parameters are in bounds of current offer.
+     * @param creditApplication incoming application
+     * @return true if application is correct in context of this offer.
+     */
+    private boolean applicationCorrespondsToOffer(final CreditApplication creditApplication) {
+
+        boolean amountInBoundsOfOffer =
+                            creditApplication.getAmount() <= getMaxAmount()
+                            && creditApplication.getAmount() >= getMinAmount();
+        if (!amountInBoundsOfOffer) {
+            return false;
+        }
+
+        boolean durationInBoundsOfOffer =
+            creditApplication.getDurationInMonths() <= getMaxMonthDuration()
+            || creditApplication.getDurationInMonths() >= getMinMonthDuration();
+
+        if (!durationInBoundsOfOffer) {
+            return false;
+        }
+
+        if (creditApplication.getCurrency() != null
+                && !creditApplication.getCurrency().equals(getCurrency())) {
+            return false;
+        }
+        return true;
+    }
 }
