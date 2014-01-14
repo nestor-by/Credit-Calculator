@@ -1,6 +1,7 @@
 package su.ugatu.moodle.is.credit_calc;
 
 import java.util.Currency;
+import java.util.Date;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -13,6 +14,7 @@ public class CreditApplicationImpl implements CreditApplication {
     private Currency currency;
     private CreditPaymentType paymentType;
     private Integer durationInMonths;
+    private Date startDate;
 
     public CreditApplicationImpl(final Double amount) {
         this.amount = amount;
@@ -29,19 +31,14 @@ public class CreditApplicationImpl implements CreditApplication {
     }
 
     @Override
-    public CreditPaymentType getPaymentType() {
-        return paymentType;
-    }
-
-    @Override
-    public Integer getDurationInMonths() {
-        return durationInMonths;
-    }
-
-    @Override
     public CreditApplication setCurrency(final Currency currency) {
         this.currency = currency;
         return this;
+    }
+
+    @Override
+    public CreditPaymentType getPaymentType() {
+        return paymentType;
     }
 
     @Override
@@ -51,8 +48,23 @@ public class CreditApplicationImpl implements CreditApplication {
     }
 
     @Override
+    public Integer getDurationInMonths() {
+        return durationInMonths;
+    }
+
+    @Override
     public CreditApplication setDurationInMonths(final Integer durationInMonths) {
         this.durationInMonths = durationInMonths;
+        return this;
+    }
+
+    @Override
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public CreditApplication setStartDate(final Date startDate) {
+        this.startDate = startDate;
         return this;
     }
 

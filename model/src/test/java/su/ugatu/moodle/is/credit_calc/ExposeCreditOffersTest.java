@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * User: Rinat
+ * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 23:27
  */
@@ -26,7 +26,7 @@ public class ExposeCreditOffersTest {
                 System.out.print(creditOffer.getMinAmount() + " - ");
                 System.out.print(creditOffer.getMaxAmount() + " ");
                 System.out.print(creditOffer.getCurrency() + ". ");
-                System.out.print("Min rate: " + creditOffer.getMinRate() + ". ");
+                System.out.print("Min rate: " + creditOffer.getRate() + ". ");
                 System.out.print(creditOffer.getMinMonthDuration() + " - ");
                 System.out.print(creditOffer.getMaxMonthDuration() + " months. ");
                 System.out.println();

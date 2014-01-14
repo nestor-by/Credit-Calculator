@@ -11,7 +11,7 @@ public interface CreditOffer {
     String getName() ;
     Double getMinAmount();
     Double getMaxAmount();
-    Double getMinRate();
+    Double getRate();
     Currency getCurrency();
     Integer getMinMonthDuration();
     Integer getMaxMonthDuration();

@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Currency;
+import java.util.Date;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -48,7 +49,7 @@ class CreditOfferImpl implements CreditOffer {
     }
 
     @Override
-    public Double getMinRate() {
+    public Double getRate() {
         return minRate;
     }
 
@@ -72,8 +73,7 @@ class CreditOfferImpl implements CreditOffer {
                                             final CreditApplication creditApplication) {
         if(!applicationCorrespondsToOffer(creditApplication)) return null;
         configureApplicationBlankParams(creditApplication);
-        // todo: create CreditProposal
-        return null;
+        return new CreditProposalImpl(creditApplication, this);
     }
 
     /**
@@ -91,6 +91,9 @@ class CreditOfferImpl implements CreditOffer {
         if (creditApplication.getDurationInMonths() == null) {
             creditApplication.setDurationInMonths(getMaxMonthDuration());
         }
+        if (creditApplication.getStartDate() == null) {
+            creditApplication.setStartDate(new Date());
+        }
     }
 
     /**
@@ -100,19 +103,18 @@ class CreditOfferImpl implements CreditOffer {
      */
     private boolean applicationCorrespondsToOffer(final CreditApplication creditApplication) {
 
-        boolean amountInBoundsOfOffer =
-                            creditApplication.getAmount() <= getMaxAmount()
-                            && creditApplication.getAmount() >= getMinAmount();
+        Double amount = creditApplication.getAmount();
+        boolean amountInBoundsOfOffer = amount <= getMaxAmount()
+                                        && amount >= getMinAmount();
         if (!amountInBoundsOfOffer) {
             return false;
         }
 
-        boolean durationInBoundsOfOffer =
-            creditApplication.getDurationInMonths() <= getMaxMonthDuration()
-            || creditApplication.getDurationInMonths() >= getMinMonthDuration();
-
-        if (!durationInBoundsOfOffer) {
-            return false;
+        Integer duration = creditApplication.getDurationInMonths();
+        if (duration != null) {
+            boolean durInBounds = duration <= getMaxMonthDuration();
+            durInBounds = durInBounds && duration >= getMinMonthDuration();
+            if (!durInBounds) return false;
         }
 
         if (creditApplication.getCurrency() != null

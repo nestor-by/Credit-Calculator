@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Currency;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -17,29 +19,29 @@ public class CreditExamplesTest extends Assert {
 
     @Test
     public void getCreditAmountOnly() {
-        Double creditAmount = 100d;
+        Double creditAmount = 100000d;
 
-        LendingBank bank = BankFactory.getInstance()
-                                .getBanks().iterator().next();
+        LendingBank bank = BankFactory.getInstance().getLendingBank("Альфа-Банк");
 
-        Customer customer = new CustomerImpl().setSex(Sex.MALE);
+        Customer customer = new CustomerImpl();
 
         CreditApplication creditApplication
-                = new CreditApplicationImpl(creditAmount);
+                = new CreditApplicationImpl(creditAmount).setDurationInMonths(12);
 
-//        todo: CreditProposal creditProposal
-//                = bank.getCreditProposal(customer, creditApplication);
+        CreditProposal creditProposal = bank.getCreditProposals(
+                                customer, creditApplication).iterator().next();
 
-//        if (creditProposal == null) { // bank refused credit for customer
-//            LOG.info(bank.getDeclineReason(creditProposal));
-//        }
-//
-//        if (!customer.checkCreditProposal(creditProposal)) {
-//            fail("customer refused credit proposal");
-//        }
-//
-//        LOG.info("Customer accepts credit offer: \n" + creditProposal);
-//        bank.addCreditRecord(creditProposal);
-//        customer.addCreditRecord(creditProposal);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        List<CreditPayment> payments = creditProposal.getPayments();
+        for (CreditPayment payment: payments) {
+            System.out.print(dateFormat.format(payment.getDate()) + "; ");
+            System.out.print(decimalFormat.format(payment.getAmount()) + "; ");
+            System.out.print(decimalFormat.format(payment.getDebt()) + "; ");
+            System.out.print(decimalFormat.format(payment.getInterest()) + "; ");
+            System.out.print(decimalFormat.format(payment.getTotalLeft()) + "; ");
+            System.out.println();
+
+        }
     }
 }

@@ -1,13 +1,12 @@
 package su.ugatu.moodle.is.credit_calc;
 
 import javax.xml.bind.JAXB;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,6 +22,9 @@ public class BankFactory {
     private static final BankFactory INSTANCE;
     private static final String BANKS_INFO_FILE_PATH = "LendingBanks.xml";
 
+    @XmlTransient
+    private Map<String, LendingBank> bankMap = new HashMap<String, LendingBank>();
+
     static {
         ClassLoader contextClassLoader
                 = Thread.currentThread().getContextClassLoader();
@@ -30,6 +32,9 @@ public class BankFactory {
         @SuppressWarnings("all")
         File file = new File(url.getPath());
         INSTANCE = unmarshal(file);
+        for (LendingBank bank: INSTANCE.getBanks()) {
+            INSTANCE.bankMap.put(bank.getName(), bank);
+        }
     }
 
     private static BankFactory unmarshal(File file) {
@@ -45,6 +50,10 @@ public class BankFactory {
 
     public Collection<LendingBank> getBanks() {
         return banks;
+    }
+
+    public LendingBank getLendingBank(String name) {
+        return bankMap.get(name);
     }
 
 }
