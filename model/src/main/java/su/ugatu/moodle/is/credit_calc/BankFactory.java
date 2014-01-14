@@ -7,7 +7,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.File;
 import java.net.URL;
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -40,9 +41,9 @@ public class BankFactory {
     }
 
     @XmlElement(name = "bank", type = LendingBankImpl.class)
-    private List<LendingBank> banks;
+    private Set<LendingBank> banks;
 
-    public List<LendingBank> getBanks() {
+    public Collection<LendingBank> getBanks() {
         return banks;
     }
 

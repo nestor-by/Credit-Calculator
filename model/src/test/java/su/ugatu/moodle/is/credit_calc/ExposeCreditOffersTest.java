@@ -2,7 +2,8 @@ package su.ugatu.moodle.is.credit_calc;
 
 import org.junit.Test;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User: Rinat
@@ -13,11 +14,13 @@ public class ExposeCreditOffersTest {
 
     @Test
     public void exposeBankOffers() {
-        List<LendingBank> banks = BankFactory.getInstance().getBanks();
+        Set<LendingBank> banks = new HashSet<LendingBank>
+                                        (BankFactory.getInstance().getBanks());
         for (LendingBank bank: banks) {
             System.out.println(bank.getName() + ". Default currency:  "
                                 + bank.getDefaultCurrency() + ".");
-            List<CreditOffer> creditOffers = bank.getCreditOffers();
+            Set<CreditOffer> creditOffers = new HashSet<CreditOffer>
+                                                    (bank.getCreditOffers());
             for (CreditOffer creditOffer: creditOffers) {
                 System.out.print("\t" + creditOffer.getName() + ": ");
                 System.out.print(creditOffer.getMinAmount() + " - ");

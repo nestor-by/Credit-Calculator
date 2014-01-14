@@ -4,8 +4,9 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.Collection;
 import java.util.Currency;
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -22,7 +23,7 @@ class LendingBankImpl extends BankImpl implements LendingBank {
     private String defaultCurrency;
 
     @XmlElement(name = "creditOffer", type = CreditOfferImpl.class)
-    private List<CreditOffer> creditOffers;
+    private Set<CreditOffer> creditOffers;
 
     public LendingBankImpl() {
         super(null);
@@ -33,7 +34,7 @@ class LendingBankImpl extends BankImpl implements LendingBank {
         return name;
     }
 
-    public List<CreditOffer> getCreditOffers() {
+    public Set<CreditOffer> getCreditOffers() {
         return creditOffers;
     }
 

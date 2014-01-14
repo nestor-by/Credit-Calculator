@@ -1,6 +1,6 @@
 package su.ugatu.moodle.is.credit_calc;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -8,5 +8,5 @@ import java.util.List;
  * Time: 19:28
  */
 public interface LendingBank extends Bank {
-    public List<CreditOffer> getCreditOffers();
+    Collection<CreditOffer> getCreditOffers();
 }
