@@ -14,15 +14,20 @@ import java.util.List;
  * Date: 13.01.14
  * Time: 18:50
  */
-class CreditProposalImpl implements CreditProposal {
+public class CreditProposalImpl implements CreditProposal {
 
     private final Double creditAmount;
     private final Double effectiveRate;
     private final Double totalPayment;
     private final List<CreditPayment> payments;
 
+    public CreditProposalImpl(final CreditApplication application,
+                       final CreditOffer creditOffer) {
+        this(application, creditOffer.getRate());
+    }
+
     CreditProposalImpl(final CreditApplication application,
-                              final CreditOffer creditOffer) {
+                              final double rate) {
         if (application.getPaymentType() == null) {
             throw new IllegalArgumentException(
                     "Credit application must have non-null PaymentType");
@@ -31,7 +36,9 @@ class CreditProposalImpl implements CreditProposal {
         this.creditAmount = application.getAmount();
         double totalTemp = 0;
         final int durationInMonths = application.getDurationInMonths();
-        final Double rate = creditOffer.getRate();
+        if (application.getStartDate() == null) {
+            application.setStartDate(new Date());
+        }
         Date date = application.getStartDate();
         double monthlyRate = rate / CalendarUtil.NUMBER_OF_MONTHS;
 
