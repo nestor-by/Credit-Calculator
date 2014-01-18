@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Collection;
-import java.util.Currency;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -51,7 +50,7 @@ class LendingBankImpl extends BankImpl implements LendingBank {
     }
 
     @Override
-    public Currency getDefaultCurrency() {
-        return Currency.getInstance(defaultCurrency);
+    public String getDefaultCurrency() {
+        return defaultCurrency;
     }
 }

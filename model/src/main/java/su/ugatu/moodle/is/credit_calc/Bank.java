@@ -1,7 +1,5 @@
 package su.ugatu.moodle.is.credit_calc;
 
-import java.util.Currency;
-
 /**
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
@@ -9,5 +7,5 @@ import java.util.Currency;
  */
 public interface Bank {
     String getName();
-    public Currency getDefaultCurrency();
+    public String getDefaultCurrency();
 }

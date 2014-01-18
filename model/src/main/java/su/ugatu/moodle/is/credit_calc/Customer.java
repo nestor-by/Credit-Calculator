@@ -1,7 +1,5 @@
 package su.ugatu.moodle.is.credit_calc;
 
-import com.sun.istack.internal.Nullable;
-
 /**
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
@@ -9,8 +7,8 @@ import com.sun.istack.internal.Nullable;
  */
 public interface Customer {
 
-    @Nullable Integer getAge();
-    @Nullable Sex getSex();
+    Integer getAge();
+    Sex getSex();
     Customer setSex(Sex sex);
     Customer setAge(Integer age);
 

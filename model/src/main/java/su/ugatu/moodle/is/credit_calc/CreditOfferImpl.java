@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Currency;
 import java.util.Date;
 
 /**
@@ -54,8 +53,8 @@ class CreditOfferImpl implements CreditOffer {
     }
 
     @Override
-    public Currency getCurrency() {
-        return Currency.getInstance(currencyName);
+    public String getCurrency() {
+        return currencyName;
     }
 
     @Override

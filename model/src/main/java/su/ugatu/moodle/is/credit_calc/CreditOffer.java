@@ -1,6 +1,5 @@
 package su.ugatu.moodle.is.credit_calc;
 
-import java.util.Currency;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -12,7 +11,7 @@ public interface CreditOffer {
     Double getMinAmount();
     Double getMaxAmount();
     Double getRate();
-    Currency getCurrency();
+    String getCurrency();
     Integer getMinMonthDuration();
     Integer getMaxMonthDuration();
 
