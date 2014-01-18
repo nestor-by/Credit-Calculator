@@ -30,23 +30,27 @@ class CreditProposalImpl implements CreditProposal {
         this.payments = new ArrayList<CreditPayment>();
         this.creditAmount = application.getAmount();
         double totalTemp = 0;
+        final int durationInMonths = application.getDurationInMonths();
+        final Double rate = creditOffer.getRate();
+        Date date = application.getStartDate();
+        double monthlyRate = rate / CalendarUtil.NUMBER_OF_MONTHS;
+
         switch (application.getPaymentType()) {
             case ANNUITY: {
                 /*
                  * payments are equal in total
                  * p = (S * I / 12) / (1 - (1 + I / 12)^(-M))
                  */
-                Double body = application.getAmount();
-                double monthlyRate = creditOffer.getRate() / CalendarUtil.NUMBER_OF_MONTHS;
-                Integer durationInMonths = application.getDurationInMonths();
-                Double amount = (body * monthlyRate) / (1
+
+
+                double amount = (creditAmount * monthlyRate) / (1
                         - Math.pow(1 + monthlyRate, -durationInMonths));
                 totalTemp = amount * durationInMonths;
-                Date date = application.getStartDate();
 
-                double base = body;
+                double base = creditAmount;
+
                 for (int i = 0; i < durationInMonths; i++) {
-                    Double interest = base * monthlyRate;
+                    double interest = base * monthlyRate;
                     base += interest;
 
                     date = CalendarUtil.nextMonthDate(date);
@@ -59,7 +63,25 @@ class CreditProposalImpl implements CreditProposal {
                 break;
             }
             case DIFFERENTIAL: {
-                // todo
+                double base = creditAmount;
+                for (int k = 1; k <= durationInMonths; k++) {
+                    double interest = base * monthlyRate;
+                    base += interest;
+
+                    double amount = (1.0d / durationInMonths
+                            + rate / CalendarUtil.NUMBER_OF_MONTHS)
+                            * creditAmount
+                            -  (k - 1) * ((rate / CalendarUtil.NUMBER_OF_MONTHS
+                            * creditAmount) / durationInMonths);
+                    date = CalendarUtil.nextMonthDate(date);
+                    CreditPayment payment = new CreditPaymentImpl(amount, date);
+                    payment.setDebt(creditAmount / durationInMonths);
+                    base -= amount;
+                    payment.setInterest(interest);
+                    payment.setTotalLeft(base);
+
+                    payments.add(payment);
+                }
                 break;
             }
         }
