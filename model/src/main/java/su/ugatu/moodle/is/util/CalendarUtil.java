@@ -9,6 +9,8 @@ import java.util.Date;
  */
 public class CalendarUtil {
 
+    public static final int NUMBER_OF_MONTHS = 12;
+
     /**
      * Calculate next month's date. Attention! Next month date for January 31
      * will be 28 or 29 February.

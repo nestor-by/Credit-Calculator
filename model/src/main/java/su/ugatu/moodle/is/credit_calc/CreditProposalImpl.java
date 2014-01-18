@@ -1,6 +1,7 @@
 package su.ugatu.moodle.is.credit_calc;
 
 import su.ugatu.moodle.is.util.CalendarUtil;
+import su.ugatu.moodle.is.util.FinUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,17 +16,20 @@ import java.util.List;
  */
 class CreditProposalImpl implements CreditProposal {
 
-    private Double totalAmount;
-    private List<CreditPayment> payments;
-    private static final int NUMBER_OF_MONTHS = 12;
+    private final Double creditAmount;
+    private final Double effectiveRate;
+    private final Double totalPayment;
+    private final List<CreditPayment> payments;
 
-    public CreditProposalImpl(final CreditApplication application,
+    CreditProposalImpl(final CreditApplication application,
                               final CreditOffer creditOffer) {
         if (application.getPaymentType() == null) {
             throw new IllegalArgumentException(
                     "Credit application must have non-null PaymentType");
         }
         this.payments = new ArrayList<CreditPayment>();
+        this.creditAmount = application.getAmount();
+        double totalTemp = 0;
         switch (application.getPaymentType()) {
             case ANNUITY: {
                 /*
@@ -33,11 +37,11 @@ class CreditProposalImpl implements CreditProposal {
                  * p = (S * I / 12) / (1 - (1 + I / 12)^(-M))
                  */
                 Double body = application.getAmount();
-                double monthlyRate = creditOffer.getRate() / NUMBER_OF_MONTHS;
+                double monthlyRate = creditOffer.getRate() / CalendarUtil.NUMBER_OF_MONTHS;
                 Integer durationInMonths = application.getDurationInMonths();
                 Double amount = (body * monthlyRate) / (1
                         - Math.pow(1 + monthlyRate, -durationInMonths));
-                this.totalAmount = amount * durationInMonths;
+                totalTemp = amount * durationInMonths;
                 Date date = application.getStartDate();
 
                 double base = body;
@@ -52,7 +56,6 @@ class CreditProposalImpl implements CreditProposal {
                     payment.setTotalLeft(base);
                     payments.add(payment);
                 }
-                //todo: effective rate
                 break;
             }
             case DIFFERENTIAL: {
@@ -60,6 +63,8 @@ class CreditProposalImpl implements CreditProposal {
                 break;
             }
         }
+        this.totalPayment = totalTemp;
+        this.effectiveRate = FinUtil.calcEffectiveRate(this);
     }
 
     @Override
@@ -68,7 +73,17 @@ class CreditProposalImpl implements CreditProposal {
     }
 
     @Override
-    public Double getTotalAmount() {
-        return totalAmount;
+    public Double getTotalPayment() {
+        return totalPayment;
+    }
+
+    @Override
+    public Double getCreditAmount() {
+        return creditAmount;
+    }
+
+    @Override
+    public Double getEffectiveRate() {
+        return effectiveRate;
     }
 }

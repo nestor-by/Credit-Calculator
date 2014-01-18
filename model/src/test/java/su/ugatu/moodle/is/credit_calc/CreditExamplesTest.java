@@ -21,12 +21,13 @@ public class CreditExamplesTest extends Assert {
     public void getCreditAmountOnly() {
         Double creditAmount = 100000d;
 
-        LendingBank bank = BankFactory.getInstance().getLendingBank("Альфа-Банк");
+        LendingBank bank
+                = BankFactory.getInstance().getLendingBank("Альфа-Банк");
 
         Customer customer = new CustomerImpl();
 
         CreditApplication creditApplication
-                = new CreditApplicationImpl(creditAmount).setDurationInMonths(12);
+              = new CreditApplicationImpl(creditAmount).setDurationInMonths(12);
 
         CreditProposal creditProposal = bank.getCreditProposals(
                                 customer, creditApplication).iterator().next();
@@ -34,12 +35,17 @@ public class CreditExamplesTest extends Assert {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         List<CreditPayment> payments = creditProposal.getPayments();
+        System.out.println("Total: "
+          + decimalFormat.format(creditProposal.getTotalPayment()));
+        System.out.println("Effective rate: "
+         + decimalFormat.format(creditProposal.getEffectiveRate() * 100) + "%");
+
         for (CreditPayment payment: payments) {
             System.out.print(dateFormat.format(payment.getDate()) + "; ");
             System.out.print(decimalFormat.format(payment.getAmount()) + "; ");
             System.out.print(decimalFormat.format(payment.getDebt()) + "; ");
-            System.out.print(decimalFormat.format(payment.getInterest()) + "; ");
-            System.out.print(decimalFormat.format(payment.getTotalLeft()) + "; ");
+            System.out.print(decimalFormat.format(payment.getInterest()) +"; ");
+            System.out.print(decimalFormat.format(payment.getTotalLeft())+"; ");
             System.out.println();
 
         }

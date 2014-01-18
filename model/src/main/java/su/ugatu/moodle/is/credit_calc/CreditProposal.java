@@ -12,5 +12,7 @@ public interface CreditProposal {
      * @return payments sorted by date.
      */
     List<CreditPayment> getPayments();
-    Double getTotalAmount();
+    Double getCreditAmount();
+    Double getTotalPayment();
+    Double getEffectiveRate();
 }
