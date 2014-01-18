@@ -21,12 +21,12 @@ public class CreditProposalImpl implements CreditProposal {
     private final Double totalPayment;
     private final List<CreditPayment> payments;
 
-    public CreditProposalImpl(final CreditApplication application,
+    CreditProposalImpl(final CreditApplication application,
                        final CreditOffer creditOffer) {
         this(application, creditOffer.getRate());
     }
 
-    CreditProposalImpl(final CreditApplication application,
+    public CreditProposalImpl(final CreditApplication application,
                               final double rate) {
         if (application.getPaymentType() == null) {
             throw new IllegalArgumentException(
