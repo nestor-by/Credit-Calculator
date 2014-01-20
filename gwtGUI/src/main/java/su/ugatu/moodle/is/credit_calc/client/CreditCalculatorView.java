@@ -1,7 +1,6 @@
 package su.ugatu.moodle.is.credit_calc.client;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -11,7 +10,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import su.ugatu.moodle.is.credit_calc.*;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -59,7 +57,8 @@ public class CreditCalculatorView extends Composite {
         } else if (paymentType.getSelectedIndex() == 1) {
             app.setPaymentType(CreditPaymentType.DIFFERENTIAL);
         }
-        CreditProposal proposal = new CreditProposalImpl(app, rate.getValue() / 100d);
+        CreditOffer offer = new CreditOfferImpl().setRate(rate.getValue() / 100d);
+        CreditProposal proposal = offer.calculateProposal(app);
 
         if (tableOfPayments != null) mainPanel.remove(tableOfPayments);
 
