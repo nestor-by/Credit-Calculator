@@ -14,8 +14,11 @@ public interface CreditPayment {
     Double getDebt();
     Double getInterest();
     Double getTotalLeft();
+    Double getCommission();
 
     CreditPayment setDebt(Double debt);
     CreditPayment setInterest(Double interest);
     CreditPayment setTotalLeft(Double totalLeft);
+
+    CreditPayment setCommission(Double commission);
 }

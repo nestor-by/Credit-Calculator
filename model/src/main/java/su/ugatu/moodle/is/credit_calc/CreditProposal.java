@@ -15,4 +15,5 @@ public interface CreditProposal {
     Double getCreditAmount();
     Double getTotalPayment();
     Double getEffectiveRate();
+    Double getInitialCreditCommission();
 }

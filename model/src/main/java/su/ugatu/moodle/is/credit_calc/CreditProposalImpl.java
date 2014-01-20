@@ -20,14 +20,11 @@ public class CreditProposalImpl implements CreditProposal {
     private final Double effectiveRate;
     private final Double totalPayment;
     private final List<CreditPayment> payments;
+    private final Double initialCreditCommission;
 
     CreditProposalImpl(final CreditApplication application,
                        final CreditOffer creditOffer) {
-        this(application, creditOffer.getRate());
-    }
 
-    public CreditProposalImpl(final CreditApplication application,
-                              final double rate) {
         if (application.getPaymentType() == null) {
             throw new IllegalArgumentException(
                     "Credit application must have non-null PaymentType");
@@ -40,7 +37,38 @@ public class CreditProposalImpl implements CreditProposal {
             application.setStartDate(new Date());
         }
         Date date = application.getStartDate();
+        Double rate = creditOffer.getRate();
         double monthlyRate = rate / CalendarUtil.NUMBER_OF_MONTHS;
+
+        // zero payment is once commission
+        double initialCommissionPayments = 0;
+        Double onceCommAmount = creditOffer.getOnceCommissionAmount();
+        if (onceCommAmount != null) {
+            initialCommissionPayments += onceCommAmount;
+        }
+        Double onceCommissionPercent = creditOffer.getOnceCommissionPercent();
+        if (onceCommissionPercent != null) {
+            initialCommissionPayments += onceCommissionPercent * creditAmount;
+        }
+
+//        CreditPayment initialCreditCommission
+//                = new CreditPaymentImpl(0d, date);
+//        initialCreditCommission.setDebt(0d);
+//        initialCreditCommission.setInterest(0d);
+//        initialCreditCommission.setTotalLeft(creditAmount);
+//        initialCreditCommission.setCommission(initialCommissionPayments);
+        this.initialCreditCommission = initialCommissionPayments;
+
+        Double monthlyCommAmount = creditOffer.getMonthlyCommissionAmount();
+        Double monthlyCommPercent = creditOffer.getMonthlyCommissionPercent();
+
+        double monthlyCommission = 0;
+        if (monthlyCommAmount != null) {
+            monthlyCommission += monthlyCommAmount;
+        }
+        if (monthlyCommPercent != null) {
+            monthlyCommission += monthlyCommPercent * creditAmount;
+        }
 
         switch (application.getPaymentType()) {
             case ANNUITY: {
@@ -48,11 +76,18 @@ public class CreditProposalImpl implements CreditProposal {
                  * payments are equal in total
                  * p = (S * I / 12) / (1 - (1 + I / 12)^(-M))
                  */
-
-
                 double amount = (creditAmount * monthlyRate) / (1
                         - Math.pow(1 + monthlyRate, -durationInMonths));
-                totalTemp = amount * durationInMonths;
+
+                double withCommAmount = amount;
+                if (monthlyCommAmount != null) {
+                    withCommAmount += monthlyCommAmount;
+                }
+                if (monthlyCommPercent != null) {
+                    withCommAmount += monthlyCommPercent * creditAmount;
+                }
+
+                totalTemp = withCommAmount * durationInMonths;
 
                 double base = creditAmount;
 
@@ -61,10 +96,11 @@ public class CreditProposalImpl implements CreditProposal {
                     base += interest;
 
                     date = CalendarUtil.nextMonthDate(date);
-                    CreditPayment payment = new CreditPaymentImpl(amount, date);
+                    CreditPayment payment = new CreditPaymentImpl(withCommAmount, date);
                     payment.setDebt(amount - interest).setInterest(interest);
                     base -= amount;
                     payment.setTotalLeft(base);
+                    payment.setCommission(monthlyCommission);
                     payments.add(payment);
                 }
                 break;
@@ -80,13 +116,23 @@ public class CreditProposalImpl implements CreditProposal {
                             * creditAmount
                             -  (k - 1) * ((rate / CalendarUtil.NUMBER_OF_MONTHS
                             * creditAmount) / durationInMonths);
+
+                    double withCommAmount = amount;
+                    if (monthlyCommAmount != null) {
+                        withCommAmount += monthlyCommAmount;
+                    }
+                    if (monthlyCommPercent != null) {
+                        withCommAmount += monthlyCommPercent * creditAmount;
+                    }
+
                     date = CalendarUtil.nextMonthDate(date);
-                    CreditPayment payment = new CreditPaymentImpl(amount, date);
+                    CreditPayment payment
+                            = new CreditPaymentImpl(withCommAmount, date);
                     payment.setDebt(creditAmount / durationInMonths);
                     base -= amount;
                     payment.setInterest(interest);
                     payment.setTotalLeft(base);
-
+                    payment.setCommission(monthlyCommission);
                     payments.add(payment);
                 }
                 break;
@@ -114,5 +160,10 @@ public class CreditProposalImpl implements CreditProposal {
     @Override
     public Double getEffectiveRate() {
         return effectiveRate;
+    }
+
+    @Override
+    public Double getInitialCreditCommission() {
+        return initialCreditCommission;
     }
 }

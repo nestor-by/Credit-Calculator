@@ -11,6 +11,10 @@
             <minMonthDuration>12</minMonthDuration>
             <maxMonthDuration>60</maxMonthDuration>
             <currencyName>RUB</currencyName>
+            <onceCommissionAmount>0</onceCommissionAmount>
+            <onceCommissionPercent>0</onceCommissionPercent>
+            <monthlyCommissionAmount>0</monthlyCommissionAmount>
+            <monthlyCommissionPercent>0</monthlyCommissionPercent>
         </creditOffer>
         <creditOffer>
             <name>Удобный</name>
@@ -20,6 +24,10 @@
             <minMonthDuration>12</minMonthDuration>
             <maxMonthDuration>60</maxMonthDuration>
             <currencyName>RUB</currencyName>
+            <onceCommissionAmount>0</onceCommissionAmount>
+            <onceCommissionPercent>0</onceCommissionPercent>
+            <monthlyCommissionAmount>0</monthlyCommissionAmount>
+            <monthlyCommissionPercent>0</monthlyCommissionPercent>
         </creditOffer>
     </bank>
     <bank>
@@ -33,6 +41,10 @@
             <minMonthDuration>12</minMonthDuration>
             <maxMonthDuration>60</maxMonthDuration>
             <currencyName>RUB</currencyName>
+            <onceCommissionAmount>0</onceCommissionAmount>
+            <onceCommissionPercent>0</onceCommissionPercent>
+            <monthlyCommissionAmount>0</monthlyCommissionAmount>
+            <monthlyCommissionPercent>0</monthlyCommissionPercent>
         </creditOffer>
     </bank>
 </banks>

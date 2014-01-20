@@ -28,6 +28,7 @@ public class FinUtil {
                 dfx += i * payment.getAmount() * Math.pow(x, i - 1);
             }
             fx -= proposal.getCreditAmount();
+            fx += proposal.getInitialCreditCommission();
             x -= fx/dfx;
             double previousER = er;
             er = Math.pow(x, -paymentCount) - 1;

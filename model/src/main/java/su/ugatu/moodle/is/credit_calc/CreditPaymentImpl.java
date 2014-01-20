@@ -14,6 +14,7 @@ public class CreditPaymentImpl implements CreditPayment {
     private Double debt;
     private Double totalLeft;
     private Double interest;
+    private Double commission;
 
     public CreditPaymentImpl(final Double amount, final Date date) {
         this.amount = amount;
@@ -46,6 +47,11 @@ public class CreditPaymentImpl implements CreditPayment {
     }
 
     @Override
+    public Double getCommission() {
+        return commission;
+    }
+
+    @Override
     public CreditPayment setDebt(final Double debt) {
         this.debt = debt;
         return this;
@@ -60,6 +66,12 @@ public class CreditPaymentImpl implements CreditPayment {
     @Override
     public CreditPayment setTotalLeft(final Double totalLeft) {
         this.totalLeft = totalLeft;
+        return this;
+    }
+
+    @Override
+    public CreditPayment setCommission(final Double commission) {
+        this.commission = commission;
         return this;
     }
 }

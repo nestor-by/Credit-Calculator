@@ -14,7 +14,12 @@ public interface CreditOffer {
     String getCurrency();
     Integer getMinMonthDuration();
     Integer getMaxMonthDuration();
+    Double getMonthlyCommissionPercent();
+    Double getOnceCommissionAmount();
+    Double getOnceCommissionPercent();
+    Double getMonthlyCommissionAmount();
 
+    CreditProposal calculateProposal(CreditApplication application);
     /**
      * Calculates {@link CreditProposal} on a given {@link Customer} and
      * {@link CreditApplication}.
@@ -26,4 +31,14 @@ public interface CreditOffer {
      */
     CreditProposal calculateProposal(Customer customer,
                                      CreditApplication creditApplication);
+
+    CreditOffer setRate(Double rate);
+
+    CreditOffer setOnceCommissionAmount(Double onceCommissionAmount);
+
+    CreditOffer setOnceCommissionPercent(Double onceCommissionPercent);
+
+    CreditOffer setMonthlyCommissionAmount(Double monthlyCommissionAmount);
+
+    CreditOffer setMonthlyCommissionPercent(Double monthlyCommissionPercent);
 }

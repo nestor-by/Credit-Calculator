@@ -18,23 +18,11 @@ public class WithoutBanksCalcTest {
         CreditApplication app = new CreditApplicationImpl(100000d);
         app.setDurationInMonths(12);
         app.setPaymentType(CreditPaymentType.ANNUITY);
-        CreditProposal proposal = new CreditProposalImpl(app, 0.1699d);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
-        List<CreditPayment> payments = proposal.getPayments();
-        System.out.println("Total: "
-                + decimalFormat.format(proposal.getTotalPayment()));
-        System.out.println("Effective rate: "
-                + decimalFormat.format(proposal.getEffectiveRate() * 100) + "%");
 
-        for (CreditPayment payment: payments) {
-            System.out.print(dateFormat.format(payment.getDate()) + "; ");
-            System.out.print(decimalFormat.format(payment.getAmount()) + "; ");
-            System.out.print(decimalFormat.format(payment.getDebt()) + "; ");
-            System.out.print(decimalFormat.format(payment.getInterest()) +"; ");
-            System.out.print(decimalFormat.format(payment.getTotalLeft())+"; ");
-            System.out.println();
+        CreditOffer offer = new CreditOfferImpl();
+        offer.setRate(0.1699d);
 
-        }
+        CreditProposal proposal = offer.calculateProposal(app);
+        TestUtil.printProposal(proposal);
     }
 }

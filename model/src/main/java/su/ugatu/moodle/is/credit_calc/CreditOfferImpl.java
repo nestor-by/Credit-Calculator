@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "creditOffer")
-class CreditOfferImpl implements CreditOffer {
+public class CreditOfferImpl implements CreditOffer {
 
     private static final CreditPaymentType DEFAULT_PAYMENT_TYPE = CreditPaymentType.ANNUITY;
 
@@ -24,13 +24,21 @@ class CreditOfferImpl implements CreditOffer {
     @XmlElement
     private Double maxAmount;
     @XmlElement
-    private Double minRate;
+    private Double rate;
     @XmlElement
     private String currencyName;
     @XmlElement
     private Integer minMonthDuration;
     @XmlElement
     private Integer maxMonthDuration;
+    @XmlElement
+    private Double onceCommissionAmount;
+    @XmlElement
+    private Double onceCommissionPercent;
+    @XmlElement
+    private Double monthlyCommissionAmount;
+    @XmlElement
+    private Double monthlyCommissionPercent;
 
     @Override
     public String getName() {
@@ -49,7 +57,7 @@ class CreditOfferImpl implements CreditOffer {
 
     @Override
     public Double getRate() {
-        return minRate;
+        return rate;
     }
 
     @Override
@@ -68,11 +76,66 @@ class CreditOfferImpl implements CreditOffer {
     }
 
     @Override
+    public Double getMonthlyCommissionPercent() {
+        return monthlyCommissionPercent;
+    }
+
+    @Override
+    public Double getOnceCommissionAmount() {
+        return onceCommissionAmount;
+    }
+
+    @Override
+    public Double getOnceCommissionPercent() {
+        return onceCommissionPercent;
+    }
+
+    @Override
+    public Double getMonthlyCommissionAmount() {
+        return monthlyCommissionAmount;
+    }
+
+    @Override
+    public CreditProposal calculateProposal(final CreditApplication application) {
+        return calculateProposal(null, application);
+    }
+
+    @Override
     public CreditProposal calculateProposal(final Customer customer,
                                             final CreditApplication creditApplication) {
         if(!applicationCorrespondsToOffer(creditApplication)) return null;
         configureApplicationBlankParams(creditApplication);
         return new CreditProposalImpl(creditApplication, this);
+    }
+
+    @Override
+    public CreditOffer setRate(final Double rate) {
+        this.rate = rate;
+        return this;
+    }
+
+    @Override
+    public CreditOffer setOnceCommissionAmount(final Double onceCommissionAmount) {
+        this.onceCommissionAmount = onceCommissionAmount;
+        return this;
+    }
+
+    @Override
+    public CreditOffer setOnceCommissionPercent(final Double onceCommissionPercent) {
+        this.onceCommissionPercent = onceCommissionPercent;
+        return this;
+    }
+
+    @Override
+    public CreditOffer setMonthlyCommissionAmount(final Double monthlyCommissionAmount) {
+        this.monthlyCommissionAmount = monthlyCommissionAmount;
+        return this;
+    }
+
+    @Override
+    public CreditOffer setMonthlyCommissionPercent(final Double monthlyCommissionPercent) {
+        this.monthlyCommissionPercent = monthlyCommissionPercent;
+        return this;
     }
 
     /**
@@ -103,23 +166,39 @@ class CreditOfferImpl implements CreditOffer {
     private boolean applicationCorrespondsToOffer(final CreditApplication creditApplication) {
 
         Double amount = creditApplication.getAmount();
-        boolean amountInBoundsOfOffer = amount <= getMaxAmount()
-                                        && amount >= getMinAmount();
-        if (!amountInBoundsOfOffer) {
-            return false;
-        }
+        if (!amountInBounds(amount)) return false;
 
         Integer duration = creditApplication.getDurationInMonths();
-        if (duration != null) {
-            boolean durInBounds = duration <= getMaxMonthDuration();
-            durInBounds = durInBounds && duration >= getMinMonthDuration();
-            if (!durInBounds) return false;
-        }
+        if (duration != null && !durationInBounds(duration)) return false;
 
-        if (creditApplication.getCurrency() != null
-                && !creditApplication.getCurrency().equals(getCurrency())) {
+        String currency = creditApplication.getCurrency();
+        if (currency != null && getCurrency() != null
+                             && !currency.equals(getCurrency())) {
             return false;
         }
+
         return true;
+    }
+
+    private boolean durationInBounds(final Integer duration) {
+        boolean durInBounds = true;
+        if (getMaxMonthDuration() != null) {
+            durInBounds = duration <= getMaxMonthDuration();
+        }
+        if (getMinMonthDuration() != null) {
+            durInBounds = durInBounds && duration >= getMinMonthDuration();
+        }
+        return durInBounds;
+    }
+
+    private boolean amountInBounds(final Double amount) {
+        boolean amountInBounds = true;
+        if (getMaxAmount() != null) {
+            amountInBounds = amount <= getMaxAmount();
+        }
+        if (getMinAmount() != null) {
+            amountInBounds = amountInBounds && amount >= getMinAmount();
+        }
+        return amountInBounds;
     }
 }
