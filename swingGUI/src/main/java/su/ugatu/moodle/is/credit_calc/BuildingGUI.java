@@ -3,27 +3,31 @@ package su.ugatu.moodle.is.credit_calc;
 
 import com.jtattoo.plaf.aluminium.AluminiumLookAndFeel;
 
+import su.ugatu.moodle.is.credit_calc.action.Calc;
 import su.ugatu.moodle.is.credit_calc.component.MainFrame;
-import su.ugatu.moodle.is.credit_calc.component.MyModel;
 import su.ugatu.moodle.is.credit_calc.component.MyPanel;
 import su.ugatu.moodle.is.credit_calc.component.MyTextField;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.print.PrinterException;
 import java.text.MessageFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+
 
 public class BuildingGUI {
     private JFrame frame;
-    private JPanel panel, tb;
-    private JTextField lostName, firstName, patronymic;
+    private JPanel panel, tb, resPan;
+    private JTextField amount, durationInMonths, interestRate;
     private JMenu file, help;
     private JMenuItem exit, about;
     private JButton btn, printer;
+    private JComboBox paymentType;
+    private JTable table;
+    private JLabel label1;
+    private String[] str = {"Аннуитетная", "Дифференцированная"};
 
     public BuildingGUI(){
         ////////////////////  Подключение скина (библиотека JTattoo 1.6.10)  ///////////////////
@@ -51,51 +55,51 @@ public class BuildingGUI {
         frame = new MainFrame(); // создания главного окна
         frame.setJMenuBar(menuBar); // добавление панель меню
         // создания панели
-        panel = new MyPanel("Данные",200,200);
+        panel = new MyPanel("Параметры кредита",200,200);
         tb = new JPanel(new FlowLayout(FlowLayout.LEFT));
         tb.setPreferredSize(new Dimension(760,240));
-        //tb.setBorder(BorderFactory.createLineBorder(Color.black,2));
+        resPan = new JPanel();
+        resPan.setPreferredSize(new Dimension(500,150));
+        resPan.setBorder(BorderFactory.createLineBorder(Color.black,2));/////
 
-        MyModel model = new MyModel();
-        final JTable table = new JTable(model);
+        table = new JTable();
         JScrollPane scrollPane = new JScrollPane(table); // Добавление таблицы в панель полосу прокруток
         scrollPane.setPreferredSize(new Dimension(750,200));
 
-        // тестовая добавления данных в таблицу
-        for(int i=0; i < 24; i++){
-            Calendar date = new GregorianCalendar(2014,06,27);
-            date.add(Calendar.MONTH,i); // Инкремент месяца
-
-            int day = date.get(Calendar.DAY_OF_MONTH);
-            int month = date.get(Calendar.MONTH);
-            int year = date.get(Calendar.YEAR);
-            if(month == 0) month = 12;
-
-            String dt = day+"."+month+"."+year;
-            String[] str = {""+(i+1),""+dt,""+15049.81 ,""+10424.81,""+4625.00,""+0.00,""+289575.19};
-            model.addData(str);
-        }
-
         // создания текстовых полей
-        lostName = new MyTextField("Фамилия");
-        firstName = new MyTextField("Имя");
-        patronymic = new MyTextField("Отчество");
+        amount = new MyTextField("Сумма кредита");
+        durationInMonths = new MyTextField("Срок кредита");
+        interestRate = new MyTextField("Процентная ставка");
+
+        //Создания надпеси
+        label1 = new JLabel("");
+        label1.setFont(new FontUIResource("Arial",2,20));
 
         // создание кнопки
         btn = new JButton("Рассчитать");
         printer = new JButton("Печать");
 
+        // создания ComboBox
+        paymentType = new JComboBox(str);
+
         // добавление в панель
-        panel.add(lostName);
-        panel.add(firstName);
-        panel.add(patronymic);
+        panel.add(amount);
+        panel.add(durationInMonths);
+        panel.add(interestRate);
+        panel.add(paymentType);
         panel.add(btn);
         tb.add(scrollPane);
         tb.add(printer);
+        resPan.add(label1, BorderLayout.CENTER);
 
         // добавление в главное окно
         frame.add(panel);
+        frame.add(resPan);
         frame.add(tb);
+
+
+        // слушатель кнопки (расчет)
+        btn.addActionListener(new Calc(frame, amount, durationInMonths, interestRate, paymentType, table, label1));
 
         // слушатель выход
         exit.addActionListener(new AbstractAction() {

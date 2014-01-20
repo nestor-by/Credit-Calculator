@@ -18,6 +18,12 @@
             <artifactId>JTattoo</artifactId>
             <version>1.6.10</version>
         </dependency>
+
+        <dependency>
+            <groupId>su.ugatu.moodle.is.credit-calc</groupId>
+            <artifactId>model</artifactId>
+        </dependency>
+
     </dependencies>
 
     <name>swingGUI</name>

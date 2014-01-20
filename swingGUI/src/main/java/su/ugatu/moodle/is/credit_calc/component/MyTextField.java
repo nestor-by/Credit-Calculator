@@ -4,8 +4,7 @@ import javax.swing.*;
 import javax.swing.plaf.FontUIResource;
 
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 
 public class MyTextField extends JTextField implements FocusListener{
     private String name;
@@ -37,4 +36,5 @@ public class MyTextField extends JTextField implements FocusListener{
             setText(name);
         }
     }
+
 }
