@@ -11,6 +11,7 @@ import java.util.List;
 public class TestUtil {
 
     public static void printProposal(CreditProposal proposal) {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         List<CreditPayment> payments = proposal.getPayments();
         System.out.println("Total: "

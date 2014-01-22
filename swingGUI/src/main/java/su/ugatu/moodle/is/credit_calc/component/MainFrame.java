@@ -6,7 +6,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     public MainFrame(){
         super.setTitle("Кредитный калькулятор");
-        super.setSize(780, 510);
+        super.setSize(780, 700);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(new FlowLayout(FlowLayout.LEFT));
         super.setResizable(false);

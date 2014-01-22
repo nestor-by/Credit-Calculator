@@ -14,7 +14,7 @@ public class MyTextField extends JTextField implements FocusListener{
         setFont(new FontUIResource(name,2,14));
         setText(this.name);
         addFocusListener(this); // добавление слушателя фокуса
-        super.setPreferredSize(new Dimension(150,20));
+        super.setPreferredSize(new Dimension(270,20));
     }
 
     // действие при сфокусированном текстовом поле
