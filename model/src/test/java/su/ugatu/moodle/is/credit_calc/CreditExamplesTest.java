@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -19,7 +20,7 @@ public class CreditExamplesTest extends Assert {
 
     @Test
     public void getCreditAmountOnly() {
-        Double creditAmount = 100000d;
+        BigDecimal creditAmount = new BigDecimal(100000);
 
         LendingBank bank
                 = BankFactory.getInstance().getLendingBank("Альфа-Банк");

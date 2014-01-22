@@ -32,7 +32,7 @@ public class BankFactory {
         @SuppressWarnings("all")
         File file = new File(url.getPath());
         INSTANCE = unmarshal(file);
-        for (LendingBank bank: INSTANCE.getBanks()) {
+        for (LendingBank bank : INSTANCE.getBanks()) {
             INSTANCE.bankMap.put(bank.getName(), bank);
         }
     }

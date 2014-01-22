@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.*;
 import su.ugatu.moodle.is.credit_calc.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**

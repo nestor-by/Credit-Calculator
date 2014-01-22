@@ -1,9 +1,13 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import su.ugatu.moodle.is.util.BigDecimalAdapter;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -20,11 +24,14 @@ public class CreditOfferImpl implements CreditOffer {
     @XmlElement
     private String name;
     @XmlElement
-    private Double minAmount;
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
+    private BigDecimal minAmount;
     @XmlElement
-    private Double maxAmount;
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
+    private BigDecimal maxAmount;
     @XmlElement
-    private Double rate;
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
+    private BigDecimal rate;
     @XmlElement
     private String currencyName;
     @XmlElement
@@ -32,13 +39,17 @@ public class CreditOfferImpl implements CreditOffer {
     @XmlElement
     private Integer maxMonthDuration;
     @XmlElement
-    private Double onceCommissionAmount;
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
+    private BigDecimal onceCommissionAmount;
     @XmlElement
-    private Double onceCommissionPercent;
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
+    private BigDecimal onceCommissionPercent;
     @XmlElement
-    private Double monthlyCommissionAmount;
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
+    private BigDecimal monthlyCommissionAmount;
     @XmlElement
-    private Double monthlyCommissionPercent;
+    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
+    private BigDecimal monthlyCommissionPercent;
 
     @Override
     public String getName() {
@@ -46,17 +57,17 @@ public class CreditOfferImpl implements CreditOffer {
     }
 
     @Override
-    public Double getMinAmount() {
+    public BigDecimal getMinAmount() {
         return minAmount;
     }
 
     @Override
-    public Double getMaxAmount() {
+    public BigDecimal getMaxAmount() {
         return maxAmount;
     }
 
     @Override
-    public Double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
@@ -76,22 +87,22 @@ public class CreditOfferImpl implements CreditOffer {
     }
 
     @Override
-    public Double getMonthlyCommissionPercent() {
+    public BigDecimal getMonthlyCommissionPercent() {
         return monthlyCommissionPercent;
     }
 
     @Override
-    public Double getOnceCommissionAmount() {
+    public BigDecimal getOnceCommissionAmount() {
         return onceCommissionAmount;
     }
 
     @Override
-    public Double getOnceCommissionPercent() {
+    public BigDecimal getOnceCommissionPercent() {
         return onceCommissionPercent;
     }
 
     @Override
-    public Double getMonthlyCommissionAmount() {
+    public BigDecimal getMonthlyCommissionAmount() {
         return monthlyCommissionAmount;
     }
 
@@ -103,37 +114,37 @@ public class CreditOfferImpl implements CreditOffer {
     @Override
     public CreditProposal calculateProposal(final Customer customer,
                                             final CreditApplication creditApplication) {
-        if(!applicationCorrespondsToOffer(creditApplication)) return null;
+        if (!applicationCorrespondsToOffer(creditApplication)) return null;
         configureApplicationBlankParams(creditApplication);
         return new CreditProposalImpl(creditApplication, this);
     }
 
     @Override
-    public CreditOffer setRate(final Double rate) {
+    public CreditOffer setRate(final BigDecimal rate) {
         this.rate = rate;
         return this;
     }
 
     @Override
-    public CreditOffer setOnceCommissionAmount(final Double onceCommissionAmount) {
+    public CreditOffer setOnceCommissionAmount(final BigDecimal onceCommissionAmount) {
         this.onceCommissionAmount = onceCommissionAmount;
         return this;
     }
 
     @Override
-    public CreditOffer setOnceCommissionPercent(final Double onceCommissionPercent) {
+    public CreditOffer setOnceCommissionPercent(final BigDecimal onceCommissionPercent) {
         this.onceCommissionPercent = onceCommissionPercent;
         return this;
     }
 
     @Override
-    public CreditOffer setMonthlyCommissionAmount(final Double monthlyCommissionAmount) {
+    public CreditOffer setMonthlyCommissionAmount(final BigDecimal monthlyCommissionAmount) {
         this.monthlyCommissionAmount = monthlyCommissionAmount;
         return this;
     }
 
     @Override
-    public CreditOffer setMonthlyCommissionPercent(final Double monthlyCommissionPercent) {
+    public CreditOffer setMonthlyCommissionPercent(final BigDecimal monthlyCommissionPercent) {
         this.monthlyCommissionPercent = monthlyCommissionPercent;
         return this;
     }
@@ -141,6 +152,7 @@ public class CreditOfferImpl implements CreditOffer {
     /**
      * Sets payment type, currency and duration of application to offers values
      * if some of them or all are null.
+     *
      * @param creditApplication incoming application
      */
     private void configureApplicationBlankParams(final CreditApplication creditApplication) {
@@ -160,12 +172,13 @@ public class CreditOfferImpl implements CreditOffer {
 
     /**
      * Checks if applications parameters are in bounds of current offer.
+     *
      * @param creditApplication incoming application
      * @return true if application is correct in context of this offer.
      */
     private boolean applicationCorrespondsToOffer(final CreditApplication creditApplication) {
 
-        Double amount = creditApplication.getAmount();
+        BigDecimal amount = creditApplication.getAmount();
         if (!amountInBounds(amount)) return false;
 
         Integer duration = creditApplication.getDurationInMonths();
@@ -173,7 +186,7 @@ public class CreditOfferImpl implements CreditOffer {
 
         String currency = creditApplication.getCurrency();
         if (currency != null && getCurrency() != null
-                             && !currency.equals(getCurrency())) {
+                && !currency.equals(getCurrency())) {
             return false;
         }
 
@@ -191,13 +204,13 @@ public class CreditOfferImpl implements CreditOffer {
         return durInBounds;
     }
 
-    private boolean amountInBounds(final Double amount) {
+    private boolean amountInBounds(final BigDecimal amount) {
         boolean amountInBounds = true;
         if (getMaxAmount() != null) {
-            amountInBounds = amount <= getMaxAmount();
+            amountInBounds = amount.compareTo(getMaxAmount()) <= 0;
         }
         if (getMinAmount() != null) {
-            amountInBounds = amountInBounds && amount >= getMinAmount();
+            amountInBounds = amountInBounds && amount.compareTo(getMinAmount()) >= 0;
         }
         return amountInBounds;
     }

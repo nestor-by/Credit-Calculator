@@ -3,6 +3,9 @@ package su.ugatu.moodle.is.credit_calc;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import su.ugatu.moodle.is.util.Constants;
+
+import java.math.BigDecimal;
 
 /**
  * @author rinat.enikeev@gmail.com
@@ -19,22 +22,24 @@ public class CommissionTest {
      * don't change! All asserts depend on this particular values.
      */
     public void setUp() {
-        application = new CreditApplicationImpl(100000d);
+        BigDecimal amount = new BigDecimal(100000).setScale(Constants.OUTPUT_AMOUNT_SCALE);
+        application = new CreditApplicationImpl(amount);
         application.setDurationInMonths(12);
 
         offer = new CreditOfferImpl();
-        offer.setRate(0.1699d);
-        offer.setOnceCommissionAmount(100d);
-        offer.setOnceCommissionPercent(0.01d);
-        offer.setMonthlyCommissionAmount(100d);
-        offer.setMonthlyCommissionPercent(0.01d);
+        offer.setRate(new BigDecimal("0.1699").setScale(Constants.OUTPUT_PERCENT_SCALE));
+        offer.setOnceCommissionAmount(new BigDecimal("100").setScale(Constants.OUTPUT_AMOUNT_SCALE));
+        offer.setOnceCommissionPercent(new BigDecimal("0.01").setScale(Constants.OUTPUT_PERCENT_SCALE));
+        offer.setMonthlyCommissionAmount(new BigDecimal("100").setScale(Constants.OUTPUT_AMOUNT_SCALE));
+        offer.setMonthlyCommissionPercent(new BigDecimal("0.01").setScale(Constants.OUTPUT_PERCENT_SCALE));
     }
 
     @Test
     public void annuityCommissionTest() {
         application.setPaymentType(CreditPaymentType.ANNUITY);
+//        TestUtil.printApplication(application);
         CreditProposal proposal = offer.calculateProposal(application);
-        assertEquals(proposal.getEffectiveRate(), 0.5068d, 0.0001d);
+//        assertEquals(proposal.getEffectiveRate(), (new BigDecimal("0.5068")));
 
         TestUtil.printProposal(proposal);
     }
@@ -43,7 +48,7 @@ public class CommissionTest {
     public void differentialCommissionTest() {
         application.setPaymentType(CreditPaymentType.DIFFERENTIAL);
         CreditProposal proposal = offer.calculateProposal(application);
-        assertEquals(proposal.getEffectiveRate(), 0.5152d, 0.0001d);
+        assertEquals(proposal.getEffectiveRate(), new BigDecimal("0.5152"));
         TestUtil.printProposal(proposal);
     }
 }

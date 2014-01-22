@@ -1,5 +1,6 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -12,8 +13,12 @@ public interface CreditProposal {
      * @return payments sorted by date.
      */
     List<CreditPayment> getPayments();
-    Double getCreditAmount();
-    Double getTotalPayment();
-    Double getEffectiveRate();
-    Double getInitialCreditCommission();
+
+    BigDecimal getCreditAmount();
+
+    BigDecimal getTotalPayment();
+
+    BigDecimal getEffectiveRate();
+
+    BigDecimal getInitialCreditCommission();
 }

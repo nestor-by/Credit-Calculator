@@ -5,7 +5,7 @@
         <defaultCurrency>RUB</defaultCurrency>
         <creditOffer>
             <name>Особый</name>
-            <minRate>0.139</minRate>
+            <rate>0.139</rate>
             <minAmount>20000</minAmount>
             <maxAmount>1000000</maxAmount>
             <minMonthDuration>12</minMonthDuration>
@@ -18,7 +18,7 @@
         </creditOffer>
         <creditOffer>
             <name>Удобный</name>
-            <minRate>0.169</minRate>
+            <rate>0.169</rate>
             <minAmount>20000</minAmount>
             <maxAmount>1000000</maxAmount>
             <minMonthDuration>12</minMonthDuration>
@@ -35,7 +35,7 @@
         <defaultCurrency>RUB</defaultCurrency>
         <creditOffer>
             <name>Просто</name>
-            <minRate>0.1699</minRate>
+            <rate>0.1699</rate>
             <minAmount>5000</minAmount>
             <maxAmount>150000</maxAmount>
             <minMonthDuration>12</minMonthDuration>

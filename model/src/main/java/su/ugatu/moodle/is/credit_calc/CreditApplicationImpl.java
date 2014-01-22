@@ -1,5 +1,6 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -9,18 +10,18 @@ import java.util.Date;
  */
 public class CreditApplicationImpl implements CreditApplication {
 
-    private final Double amount;
+    private final BigDecimal amount;
     private String currency;
     private CreditPaymentType paymentType;
     private Integer durationInMonths;
     private Date startDate;
 
-    public CreditApplicationImpl(final Double amount) {
+    public CreditApplicationImpl(final BigDecimal amount) {
         this.amount = amount;
     }
 
     @Override
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 

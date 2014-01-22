@@ -1,44 +1,57 @@
 package su.ugatu.moodle.is.credit_calc;
 
 
+import java.math.BigDecimal;
+
 /**
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 21:47
  */
 public interface CreditOffer {
-    String getName() ;
-    Double getMinAmount();
-    Double getMaxAmount();
-    Double getRate();
+    String getName();
+
+    BigDecimal getMinAmount();
+
+    BigDecimal getMaxAmount();
+
+    BigDecimal getRate();
+
     String getCurrency();
+
     Integer getMinMonthDuration();
+
     Integer getMaxMonthDuration();
-    Double getMonthlyCommissionPercent();
-    Double getOnceCommissionAmount();
-    Double getOnceCommissionPercent();
-    Double getMonthlyCommissionAmount();
+
+    BigDecimal getMonthlyCommissionPercent();
+
+    BigDecimal getOnceCommissionAmount();
+
+    BigDecimal getOnceCommissionPercent();
+
+    BigDecimal getMonthlyCommissionAmount();
 
     CreditProposal calculateProposal(CreditApplication application);
+
     /**
      * Calculates {@link CreditProposal} on a given {@link Customer} and
      * {@link CreditApplication}.
      *
-     * @param customer incoming customer.
+     * @param customer          incoming customer.
      * @param creditApplication incoming application.
      * @return {@link CreditProposal} of {@code null} if application does not
-     * correspond to offer.
+     *         correspond to offer.
      */
     CreditProposal calculateProposal(Customer customer,
                                      CreditApplication creditApplication);
 
-    CreditOffer setRate(Double rate);
+    CreditOffer setRate(BigDecimal rate);
 
-    CreditOffer setOnceCommissionAmount(Double onceCommissionAmount);
+    CreditOffer setOnceCommissionAmount(BigDecimal onceCommissionAmount);
 
-    CreditOffer setOnceCommissionPercent(Double onceCommissionPercent);
+    CreditOffer setOnceCommissionPercent(BigDecimal onceCommissionPercent);
 
-    CreditOffer setMonthlyCommissionAmount(Double monthlyCommissionAmount);
+    CreditOffer setMonthlyCommissionAmount(BigDecimal monthlyCommissionAmount);
 
-    CreditOffer setMonthlyCommissionPercent(Double monthlyCommissionPercent);
+    CreditOffer setMonthlyCommissionPercent(BigDecimal monthlyCommissionPercent);
 }

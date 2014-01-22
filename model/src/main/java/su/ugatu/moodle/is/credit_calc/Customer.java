@@ -8,8 +8,11 @@ package su.ugatu.moodle.is.credit_calc;
 public interface Customer {
 
     Integer getAge();
+
     Sex getSex();
+
     Customer setSex(Sex sex);
+
     Customer setAge(Integer age);
 
 }

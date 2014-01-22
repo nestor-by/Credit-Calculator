@@ -1,6 +1,5 @@
 package su.ugatu.moodle.is.credit_calc;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -13,24 +12,30 @@ public class TestUtil {
 
     public static void printProposal(CreditProposal proposal) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        DecimalFormat decimalFormat = new DecimalFormat("#.##");
         List<CreditPayment> payments = proposal.getPayments();
         System.out.println("Total: "
-           + decimalFormat.format(proposal.getTotalPayment()));
+           + proposal.getTotalPayment());
         System.out.println("Initial commission: "
-           + decimalFormat.format(proposal.getInitialCreditCommission()));
+           + proposal.getInitialCreditCommission());
         System.out.println("Effective rate: "
-           + decimalFormat.format(proposal.getEffectiveRate() * 100) + "%");
+           + proposal.getEffectiveRate());
 
         for (CreditPayment payment: payments) {
             System.out.print(dateFormat.format(payment.getDate()) + "; ");
-            System.out.print(decimalFormat.format(payment.getAmount()) + "; ");
-            System.out.print(decimalFormat.format(payment.getDebt()) + "; ");
-            System.out.print(decimalFormat.format(payment.getInterest()) +"; ");
-            System.out.print(decimalFormat.format(payment.getCommission()) + "; ");
-            System.out.print(decimalFormat.format(payment.getTotalLeft())+"; ");
+            System.out.print(payment.getAmount() + "; ");
+            System.out.print(payment.getDebt() + "; ");
+            System.out.print(payment.getInterest() +"; ");
+            System.out.print(payment.getCommission() + "; ");
+            System.out.print(payment.getTotalLeft()+"; ");
             System.out.println();
 
         }
+    }
+
+    public static void printApplication(final CreditApplication application) {
+        System.out.println("Application: ");
+        System.out.println("\tAmount: " + application.getAmount());
+        System.out.println("\t" + application.getDurationInMonths());
+
     }
 }

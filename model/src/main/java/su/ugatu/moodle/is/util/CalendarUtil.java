@@ -14,9 +14,10 @@ public class CalendarUtil {
     /**
      * Calculate next month's date. Attention! Next month date for January 31
      * will be 28 or 29 February.
+     *
      * @param date to which add month.
      * @return next month's date. If Day of @param date is greater than number
-     * of days in next month, then day is set to last day of next month.
+     *         of days in next month, then day is set to last day of next month.
      */
     public static Date nextMonthDate(Date date) {
         Date result = copyDate(date);

@@ -1,5 +1,6 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -8,14 +9,21 @@ import java.util.Date;
  * Time: 20:39
  */
 public interface CreditApplication {
-    Double getAmount();
+    BigDecimal getAmount();
+
     String getCurrency();
+
     CreditPaymentType getPaymentType();
+
     Integer getDurationInMonths();
+
     Date getStartDate();
 
     CreditApplication setCurrency(final String currency);
+
     CreditApplication setPaymentType(final CreditPaymentType paymentType);
+
     CreditApplication setDurationInMonths(final Integer durationInMonths);
+
     CreditApplication setStartDate(final Date startDate);
 }

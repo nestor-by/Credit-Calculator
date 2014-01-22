@@ -2,20 +2,18 @@ package su.ugatu.moodle.is.credit_calc;
 
 import org.junit.Test;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
+import java.math.BigDecimal;
 
 /**
  * @author rinat.enikeev@gmail.com
- *         Date: 19.01.14
- *         Time: 1:18
+ * Date: 19.01.14
+ * Time: 1:18
  */
 public class DifferentialCreditTest {
 
     @Test
     public void calcDiffCreditTest() {
-        Double creditAmount = 100000d;
+        BigDecimal creditAmount = new BigDecimal(100000);
 
         LendingBank bank
                 = BankFactory.getInstance().getLendingBank("Альфа-Банк");

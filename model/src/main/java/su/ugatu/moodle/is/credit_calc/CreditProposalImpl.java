@@ -1,8 +1,11 @@
 package su.ugatu.moodle.is.credit_calc;
 
 import su.ugatu.moodle.is.util.CalendarUtil;
+import su.ugatu.moodle.is.util.Constants;
 import su.ugatu.moodle.is.util.FinUtil;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,11 +19,11 @@ import java.util.List;
  */
 public class CreditProposalImpl implements CreditProposal {
 
-    private final Double creditAmount;
-    private final Double effectiveRate;
-    private final Double totalPayment;
+    private final BigDecimal creditAmount;
+    private final BigDecimal effectiveRate;
+    private final BigDecimal totalPayment;
     private final List<CreditPayment> payments;
-    private final Double initialCreditCommission;
+    private final BigDecimal initialCreditCommission;
 
     CreditProposalImpl(final CreditApplication application,
                        final CreditOffer creditOffer) {
@@ -31,44 +34,40 @@ public class CreditProposalImpl implements CreditProposal {
         }
         this.payments = new ArrayList<CreditPayment>();
         this.creditAmount = application.getAmount();
-        double totalTemp = 0;
+        BigDecimal totalTemp = new BigDecimal(0);
         final int durationInMonths = application.getDurationInMonths();
         if (application.getStartDate() == null) {
             application.setStartDate(new Date());
         }
         Date date = application.getStartDate();
-        Double rate = creditOffer.getRate();
-        double monthlyRate = rate / CalendarUtil.NUMBER_OF_MONTHS;
+        BigDecimal rate = creditOffer.getRate();
+        BigDecimal monthlyRate = rate.divide(new BigDecimal(CalendarUtil.NUMBER_OF_MONTHS), Constants.CALC_SCALE, Constants.ROUNDING_MODE);
 
         // zero payment is once commission
-        double initialCommissionPayments = 0;
-        Double onceCommAmount = creditOffer.getOnceCommissionAmount();
+        BigDecimal initialCommissionPayments = new BigDecimal(0).setScale(Constants.OUTPUT_AMOUNT_SCALE);
+        BigDecimal onceCommAmount = creditOffer.getOnceCommissionAmount();
         if (onceCommAmount != null) {
-            initialCommissionPayments += onceCommAmount;
+            initialCommissionPayments = initialCommissionPayments.add(onceCommAmount);
         }
-        Double onceCommissionPercent = creditOffer.getOnceCommissionPercent();
+        BigDecimal onceCommissionPercent = creditOffer.getOnceCommissionPercent();
         if (onceCommissionPercent != null) {
-            initialCommissionPayments += onceCommissionPercent * creditAmount;
+            initialCommissionPayments = initialCommissionPayments.add(creditAmount.multiply(onceCommissionPercent));
         }
 
-//        CreditPayment initialCreditCommission
-//                = new CreditPaymentImpl(0d, date);
-//        initialCreditCommission.setDebt(0d);
-//        initialCreditCommission.setInterest(0d);
-//        initialCreditCommission.setTotalLeft(creditAmount);
-//        initialCreditCommission.setCommission(initialCommissionPayments);
-        this.initialCreditCommission = initialCommissionPayments;
+        this.initialCreditCommission = initialCommissionPayments.setScale(Constants.OUTPUT_AMOUNT_SCALE);
 
-        Double monthlyCommAmount = creditOffer.getMonthlyCommissionAmount();
-        Double monthlyCommPercent = creditOffer.getMonthlyCommissionPercent();
+        BigDecimal monthlyCommAmount = creditOffer.getMonthlyCommissionAmount();
+        BigDecimal monthlyCommPercent = creditOffer.getMonthlyCommissionPercent();
 
-        double monthlyCommission = 0;
+        BigDecimal monthlyCommission = new BigDecimal(0).setScale(Constants.OUTPUT_AMOUNT_SCALE);
         if (monthlyCommAmount != null) {
-            monthlyCommission += monthlyCommAmount;
+            monthlyCommission = monthlyCommission.add(monthlyCommAmount);
         }
         if (monthlyCommPercent != null) {
-            monthlyCommission += monthlyCommPercent * creditAmount;
+            monthlyCommission = monthlyCommission.add(creditAmount.multiply(monthlyCommPercent));
         }
+
+        BigDecimal durationInMonthsBD = new BigDecimal(durationInMonths);
 
         switch (application.getPaymentType()) {
             case ANNUITY: {
@@ -76,69 +75,82 @@ public class CreditProposalImpl implements CreditProposal {
                  * payments are equal in total
                  * p = (S * I / 12) / (1 - (1 + I / 12)^(-M))
                  */
-                double amount = (creditAmount * monthlyRate) / (1
-                        - Math.pow(1 + monthlyRate, -durationInMonths));
+                BigDecimal denominator = new BigDecimal(1);
+                BigDecimal pow = monthlyRate.add(new BigDecimal(1))
+                        .pow(-durationInMonths, MathContext.DECIMAL64);
+                denominator = denominator.subtract(pow);
 
-                double withCommAmount = amount;
+                BigDecimal amount = creditAmount.multiply(monthlyRate).divide(denominator, 2, Constants.ROUNDING_MODE);
+
+                BigDecimal withCommAmount = amount;
                 if (monthlyCommAmount != null) {
-                    withCommAmount += monthlyCommAmount;
+                    withCommAmount = withCommAmount.add(monthlyCommAmount);
                 }
                 if (monthlyCommPercent != null) {
-                    withCommAmount += monthlyCommPercent * creditAmount;
+                    withCommAmount = withCommAmount.add(creditAmount.multiply(monthlyCommPercent));
                 }
 
-                totalTemp = withCommAmount * durationInMonths;
+                totalTemp = withCommAmount.multiply(durationInMonthsBD);
 
-                double base = creditAmount;
+                BigDecimal base = creditAmount;
 
+                CreditPayment lastPayment = null;
                 for (int i = 0; i < durationInMonths; i++) {
-                    double interest = base * monthlyRate;
-                    base += interest;
+                    BigDecimal interest = base.multiply(monthlyRate);
+                    base = base.add(interest);
 
                     date = CalendarUtil.nextMonthDate(date);
-                    CreditPayment payment = new CreditPaymentImpl(withCommAmount, date);
-                    payment.setDebt(amount - interest).setInterest(interest);
-                    base -= amount;
-                    payment.setTotalLeft(base);
-                    payment.setCommission(monthlyCommission);
+                    CreditPayment payment = new CreditPaymentImpl(withCommAmount.setScale(Constants.OUTPUT_AMOUNT_SCALE), date);
+                    payment.setDebt(amount.subtract(interest).setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE)).setInterest(interest.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE));
+                    base = base.subtract(amount);
+                    payment.setTotalLeft(base.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE));
+                    payment.setCommission(monthlyCommission.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE));
                     payments.add(payment);
+                    lastPayment = payment;
+                }
+                // fixme костыль
+                if (lastPayment != null && lastPayment.getTotalLeft().compareTo(new BigDecimal(1 / Math.pow(10, Constants.OUTPUT_AMOUNT_SCALE))) < 0) {
+                    lastPayment.setTotalLeft(new BigDecimal(0).setScale(Constants.OUTPUT_AMOUNT_SCALE));
                 }
                 break;
             }
             case DIFFERENTIAL: {
-                double base = creditAmount;
+                BigDecimal base = creditAmount;
                 for (int k = 1; k <= durationInMonths; k++) {
-                    double interest = base * monthlyRate;
-                    base += interest;
+                    BigDecimal interest = base.multiply(monthlyRate);
+                    base = base.add(interest);
 
-                    double amount = (1.0d / durationInMonths
-                            + rate / CalendarUtil.NUMBER_OF_MONTHS)
-                            * creditAmount
-                            -  (k - 1) * ((rate / CalendarUtil.NUMBER_OF_MONTHS
-                            * creditAmount) / durationInMonths);
+                    BigDecimal firstSummand = new BigDecimal(1).divide(durationInMonthsBD, Constants.CALC_SCALE, Constants.ROUNDING_MODE)
+                            .add(monthlyRate).multiply(creditAmount);
+                    BigDecimal secondSummand = creditAmount.multiply(monthlyRate)
+                            .divide(durationInMonthsBD, Constants.CALC_SCALE, Constants.ROUNDING_MODE).multiply(new BigDecimal(k - 1));
 
-                    double withCommAmount = amount;
+                    BigDecimal amount = firstSummand.subtract(secondSummand);
+
+                    BigDecimal withCommAmount = amount;
                     if (monthlyCommAmount != null) {
-                        withCommAmount += monthlyCommAmount;
+                        withCommAmount = withCommAmount.add(monthlyCommAmount);
                     }
                     if (monthlyCommPercent != null) {
-                        withCommAmount += monthlyCommPercent * creditAmount;
+                        withCommAmount = withCommAmount.add(creditAmount.multiply(monthlyCommPercent));
                     }
+
+                    totalTemp = totalTemp.add(withCommAmount);
 
                     date = CalendarUtil.nextMonthDate(date);
                     CreditPayment payment
-                            = new CreditPaymentImpl(withCommAmount, date);
-                    payment.setDebt(creditAmount / durationInMonths);
-                    base -= amount;
-                    payment.setInterest(interest);
-                    payment.setTotalLeft(base);
-                    payment.setCommission(monthlyCommission);
+                            = new CreditPaymentImpl(withCommAmount.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE), date);
+                    payment.setDebt(creditAmount.divide(durationInMonthsBD, Constants.CALC_SCALE, Constants.ROUNDING_MODE).setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE));
+                    base = base.subtract(amount);
+                    payment.setInterest(interest.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE));
+                    payment.setTotalLeft(base.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE));
+                    payment.setCommission(monthlyCommission.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE));
                     payments.add(payment);
                 }
                 break;
             }
         }
-        this.totalPayment = totalTemp;
+        this.totalPayment = totalTemp.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE);
         this.effectiveRate = FinUtil.calcEffectiveRate(this);
     }
 
@@ -148,22 +160,22 @@ public class CreditProposalImpl implements CreditProposal {
     }
 
     @Override
-    public Double getTotalPayment() {
+    public BigDecimal getTotalPayment() {
         return totalPayment;
     }
 
     @Override
-    public Double getCreditAmount() {
+    public BigDecimal getCreditAmount() {
         return creditAmount;
     }
 
     @Override
-    public Double getEffectiveRate() {
+    public BigDecimal getEffectiveRate() {
         return effectiveRate;
     }
 
     @Override
-    public Double getInitialCreditCommission() {
+    public BigDecimal getInitialCreditCommission() {
         return initialCreditCommission;
     }
 }

@@ -1,5 +1,6 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -9,16 +10,22 @@ import java.util.Date;
  */
 public interface CreditPayment {
     Date getDate();
-    Double getAmount();
 
-    Double getDebt();
-    Double getInterest();
-    Double getTotalLeft();
-    Double getCommission();
+    BigDecimal getAmount();
 
-    CreditPayment setDebt(Double debt);
-    CreditPayment setInterest(Double interest);
-    CreditPayment setTotalLeft(Double totalLeft);
+    BigDecimal getDebt();
 
-    CreditPayment setCommission(Double commission);
+    BigDecimal getInterest();
+
+    BigDecimal getTotalLeft();
+
+    BigDecimal getCommission();
+
+    CreditPayment setDebt(BigDecimal debt);
+
+    CreditPayment setInterest(BigDecimal interest);
+
+    CreditPayment setTotalLeft(BigDecimal totalLeft);
+
+    CreditPayment setCommission(BigDecimal commission);
 }

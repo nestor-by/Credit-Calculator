@@ -1,5 +1,6 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -9,14 +10,14 @@ import java.util.Date;
  */
 public class CreditPaymentImpl implements CreditPayment {
 
-    private final Double amount;
+    private final BigDecimal amount;
     private final Date date;
-    private Double debt;
-    private Double totalLeft;
-    private Double interest;
-    private Double commission;
+    private BigDecimal debt;
+    private BigDecimal totalLeft;
+    private BigDecimal interest;
+    private BigDecimal commission;
 
-    public CreditPaymentImpl(final Double amount, final Date date) {
+    public CreditPaymentImpl(final BigDecimal amount, final Date date) {
         this.amount = amount;
         this.date = date;
     }
@@ -27,50 +28,50 @@ public class CreditPaymentImpl implements CreditPayment {
     }
 
     @Override
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
     @Override
-    public Double getDebt() {
+    public BigDecimal getDebt() {
         return debt;
     }
 
     @Override
-    public Double getInterest() {
+    public BigDecimal getInterest() {
         return interest;
     }
 
     @Override
-    public Double getTotalLeft() {
+    public BigDecimal getTotalLeft() {
         return totalLeft;
     }
 
     @Override
-    public Double getCommission() {
+    public BigDecimal getCommission() {
         return commission;
     }
 
     @Override
-    public CreditPayment setDebt(final Double debt) {
+    public CreditPayment setDebt(final BigDecimal debt) {
         this.debt = debt;
         return this;
     }
 
     @Override
-    public CreditPayment setInterest(final Double interest) {
+    public CreditPayment setInterest(final BigDecimal interest) {
         this.interest = interest;
         return this;
     }
 
     @Override
-    public CreditPayment setTotalLeft(final Double totalLeft) {
+    public CreditPayment setTotalLeft(final BigDecimal totalLeft) {
         this.totalLeft = totalLeft;
         return this;
     }
 
     @Override
-    public CreditPayment setCommission(final Double commission) {
+    public CreditPayment setCommission(final BigDecimal commission) {
         this.commission = commission;
         return this;
     }

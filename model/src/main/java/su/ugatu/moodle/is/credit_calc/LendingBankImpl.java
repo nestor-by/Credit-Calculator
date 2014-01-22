@@ -40,9 +40,9 @@ class LendingBankImpl extends BankImpl implements LendingBank {
 
     @Override
     public Collection<CreditProposal> getCreditProposals(final Customer customer,
-                                             final CreditApplication creditApplication) {
+                                                         final CreditApplication creditApplication) {
         Set<CreditProposal> proposals = new HashSet<CreditProposal>();
-        for (CreditOffer offer: creditOffers) {
+        for (CreditOffer offer : creditOffers) {
             CreditProposal creditProposal = offer.calculateProposal(customer, creditApplication);
             if (creditProposal != null) proposals.add(creditProposal);
         }

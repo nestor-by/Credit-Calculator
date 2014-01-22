@@ -3,6 +3,8 @@ package su.ugatu.moodle.is.util;
 import su.ugatu.moodle.is.credit_calc.CreditPayment;
 import su.ugatu.moodle.is.credit_calc.CreditProposal;
 
+import java.math.BigDecimal;
+
 /**
  * @author rinat.enikeev@gmail.com
  * Date: 18.01.14
@@ -10,7 +12,7 @@ import su.ugatu.moodle.is.credit_calc.CreditProposal;
  */
 public class FinUtil {
 
-    public static Double calcEffectiveRate(CreditProposal proposal) {
+    public static BigDecimal calcEffectiveRate(CreditProposal proposal) {
         // Newton method
         final double eps = 0.001d;
         double x = 1d;
@@ -24,16 +26,18 @@ public class FinUtil {
 
             for (int i = 1; i <= paymentCount; i++) {
                 CreditPayment payment = proposal.getPayments().get(i - 1);
-                fx += payment.getAmount() * Math.pow(x, i);
-                dfx += i * payment.getAmount() * Math.pow(x, i - 1);
+                fx += payment.getAmount().doubleValue() * Math.pow(x, i);
+                dfx += i * payment.getAmount().doubleValue() * Math.pow(x, i - 1);
             }
-            fx -= proposal.getCreditAmount();
-            fx += proposal.getInitialCreditCommission();
-            x -= fx/dfx;
+            fx -= proposal.getCreditAmount().doubleValue();
+            if (proposal.getInitialCreditCommission() != null) {
+                fx += proposal.getInitialCreditCommission().doubleValue();
+            }
+            x -= fx / dfx;
             double previousER = er;
             er = Math.pow(x, -paymentCount) - 1;
             currentEps = Math.abs(previousER - er);
         }
-        return er;
+        return new BigDecimal(er).setScale(Constants.OUTPUT_PERCENT_SCALE, Constants.ROUNDING_MODE);
     }
 }
