@@ -20,13 +20,13 @@ import java.text.MessageFormat;
 public class BuildingGUI {
     private JFrame frame;
     private JPanel panel, tb, resPan;
-    private JTextField amount, durationInMonths, interestRate;
+    private JTextField amount, durationInMonths, interestRate, onceCommissionAmount,onceCommissionPercent, monthlyCommissionAmount, monthlyCommissionPercent;
     private JMenu file, help;
     private JMenuItem exit, about;
     private JButton btn, printer;
     private JComboBox paymentType;
     private JTable table;
-    private JLabel label1;
+    private JLabel label1, amountL, durationInMonthsL, interestRateL, onceCommissionAmountL,onceCommissionPercentL, monthlyCommissionAmountL, monthlyCommissionPercentL;
     private String[] str = {"Аннуитетная", "Дифференцированная"};
 
     public BuildingGUI(){
@@ -55,11 +55,11 @@ public class BuildingGUI {
         frame = new MainFrame(); // создания главного окна
         frame.setJMenuBar(menuBar); // добавление панель меню
         // создания панели
-        panel = new MyPanel("Параметры кредита",200,200);
+        panel = new MyPanel("Параметры кредита",300,400);
         tb = new JPanel(new FlowLayout(FlowLayout.LEFT));
         tb.setPreferredSize(new Dimension(760,240));
         resPan = new JPanel();
-        resPan.setPreferredSize(new Dimension(500,150));
+        resPan.setPreferredSize(new Dimension(450,230));
         resPan.setBorder(BorderFactory.createLineBorder(Color.black,2));/////
 
         table = new JTable();
@@ -67,12 +67,22 @@ public class BuildingGUI {
         scrollPane.setPreferredSize(new Dimension(750,200));
 
         // создания текстовых полей
-        amount = new MyTextField("Сумма кредита");
-        durationInMonths = new MyTextField("Срок кредита");
-        interestRate = new MyTextField("Процентная ставка");
-
+        amount = new MyTextField("Например, «300000»");
+        durationInMonths = new MyTextField("Например, «36»");
+        interestRate = new MyTextField("Например, «23.2» (с точкой)");
+        onceCommissionAmount = new MyTextField("Например, «3000»");
+        onceCommissionPercent = new MyTextField("Например, «1.5» (с точкой)");
+        monthlyCommissionAmount  =new MyTextField("Например, «100»");
+        monthlyCommissionPercent = new MyTextField("Например, «0.05» (с точкой)");
         //Создания надпеси
         label1 = new JLabel("");
+        amountL = new JLabel("Сумма кредита");
+        durationInMonthsL = new JLabel("Срок кредита");
+        interestRateL = new JLabel("Процентная ставка");
+        onceCommissionAmountL = new JLabel("Разовая комиссия (в деньгах)");
+        onceCommissionPercentL = new JLabel("Разовая комиссия (в процентах)");
+        monthlyCommissionAmountL  =new JLabel("Ежемесячная комиссия (в деньгах)");
+        monthlyCommissionPercentL = new JLabel("Ежемесячная комиссия (в процентах)");
         label1.setFont(new FontUIResource("Arial",2,20));
 
         // создание кнопки
@@ -83,9 +93,21 @@ public class BuildingGUI {
         paymentType = new JComboBox(str);
 
         // добавление в панель
+        panel.add(amountL);
         panel.add(amount);
+        panel.add(durationInMonthsL);
         panel.add(durationInMonths);
+        panel.add(interestRateL);
         panel.add(interestRate);
+        panel.add(onceCommissionAmountL);
+        panel.add(onceCommissionAmount);
+        panel.add(onceCommissionPercentL);
+        panel.add(onceCommissionPercent);
+        panel.add(monthlyCommissionAmountL);
+        panel.add(monthlyCommissionAmount);
+        panel.add(monthlyCommissionPercentL);
+        panel.add(monthlyCommissionPercent);
+
         panel.add(paymentType);
         panel.add(btn);
         tb.add(scrollPane);
@@ -99,7 +121,7 @@ public class BuildingGUI {
 
 
         // слушатель кнопки (расчет)
-        btn.addActionListener(new Calc(frame, amount, durationInMonths, interestRate, paymentType, table, label1));
+        btn.addActionListener(new Calc(frame, amount, durationInMonths, interestRate, paymentType, table, label1,onceCommissionAmount,onceCommissionPercent, monthlyCommissionAmount, monthlyCommissionPercent));
 
         // слушатель выход
         exit.addActionListener(new AbstractAction() {

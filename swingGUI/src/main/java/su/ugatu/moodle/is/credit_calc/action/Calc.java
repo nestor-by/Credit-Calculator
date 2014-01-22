@@ -11,19 +11,28 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+
 public class Calc implements ActionListener{
     private JFrame component;
-    private JTextField amount, durationInMonths, interestRate;
+    private JTextField amount, durationInMonths, interestRate, onceCommissionAmount,onceCommissionPercent, monthlyCommissionAmount, monthlyCommissionPercent;
     private JComboBox paymentType;
     private JTable table;
     private JLabel label;
+    private CreditApplication application;
+    private CreditOffer offer;
 
-    public Calc(JFrame component, JTextField amount, JTextField durationInMonths, JTextField interestRate, JComboBox paymentType, JTable table, JLabel label){
+    public Calc(JFrame component, JTextField amount, JTextField durationInMonths, JTextField interestRate, JComboBox paymentType, JTable table, JLabel label, JTextField onceCommissionAmount, JTextField onceCommissionPercent, JTextField MonthlyCommissionAmount, JTextField MonthlyCommissionPercent){
         this.amount = amount;
         this.durationInMonths = durationInMonths;
         this.interestRate = interestRate;
         this.component = component;
         this.paymentType = paymentType;
+
+        this.onceCommissionAmount = onceCommissionAmount;
+        this.onceCommissionPercent = onceCommissionPercent;
+        this.monthlyCommissionPercent = MonthlyCommissionPercent;
+        this.monthlyCommissionAmount = MonthlyCommissionAmount;
+
         this.table = table;
         this.label = label;
 
@@ -47,38 +56,70 @@ public class Calc implements ActionListener{
 
         if(control(this.amount) && control(this.durationInMonths) && control(this.interestRate)){
 
-            CreditApplication app = new CreditApplicationImpl(Double.valueOf(this.amount.getText()));
-            app.setDurationInMonths(Integer.valueOf(this.durationInMonths.getText()));
+            application = new CreditApplicationImpl(Double.valueOf(this.amount.getText()));
+            application.setDurationInMonths(Integer.valueOf(this.durationInMonths.getText()));
 
-            if(paymentType.getSelectedIndex() == 1)
-                app.setPaymentType(CreditPaymentType.DIFFERENTIAL);
+            offer = new CreditOfferImpl();
+            offer.setRate(Double.valueOf(this.interestRate.getText())/100);
+            if(control(this.onceCommissionAmount))
+                offer.setOnceCommissionAmount(Double.valueOf(this.onceCommissionAmount.getText()));
             else
-                app.setPaymentType(CreditPaymentType.ANNUITY);
+                this.onceCommissionAmount.setText("0");
 
-            CreditProposal proposal = new CreditProposalImpl(app, Double.valueOf(this.interestRate.getText()));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
-            List<CreditPayment> payments = proposal.getPayments();
-            label.setText("<html>Всего: "+decimalFormat.format(proposal.getTotalPayment())+" денежных единиц<br>"
-                         +"Эффективная процентная ставка: "+(decimalFormat.format(proposal.getEffectiveRate() * 100)) + "%</html>");
-            String[] str;
-            int i = 1;
-            MyModel model = new MyModel();
-            table.setModel(model);
-            for (CreditPayment payment: payments) {
-                str = new String[]{
-                        "" + (i++),
-                        "" + dateFormat.format(payment.getDate()),
-                        "" + decimalFormat.format(payment.getAmount()),
-                        "" + decimalFormat.format(payment.getDebt()),
-                        "" + decimalFormat.format(payment.getInterest()),
-                        "" + 0.00,
-                        "" + decimalFormat.format(payment.getTotalLeft())};
-                model.addData(str);
+            if(control(this.onceCommissionPercent))
+                offer.setOnceCommissionPercent(Double.valueOf(this.onceCommissionPercent.getText())/100);
+            else
+                this.onceCommissionPercent.setText("0");
+
+            if(control(this.monthlyCommissionPercent))
+                offer.setMonthlyCommissionPercent(Double.valueOf(this.monthlyCommissionPercent.getText())/100);
+            else
+                this.monthlyCommissionPercent.setText("0");
+
+            if(control(this.monthlyCommissionAmount))
+                offer.setMonthlyCommissionAmount(Double.valueOf(this.monthlyCommissionAmount.getText()));
+            else
+                this.monthlyCommissionAmount.setText("0");
+
+            if(paymentType.getSelectedIndex() == 1){
+                application.setPaymentType(CreditPaymentType.DIFFERENTIAL);
+                CreditProposal proposal = offer.calculateProposal(application);
+                printProposal(proposal);
             }
+            else{
+                application.setPaymentType(CreditPaymentType.ANNUITY);
+                CreditProposal proposal = offer.calculateProposal(application);
+                printProposal(proposal);
+            }
+
         }
         else{
             JOptionPane.showMessageDialog(component, "Введите число");
+        }
+
+
+    }
+    private void printProposal(CreditProposal proposal){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
+        List<CreditPayment> payments = proposal.getPayments();
+        label.setText("<html>Всего: "+decimalFormat.format(proposal.getTotalPayment())+" денежных единиц<br>"
+                +"Эффективная процентная ставка: "+(decimalFormat.format(proposal.getEffectiveRate() * 100)) + "%<br>" +
+                "Комиссия: " + decimalFormat.format(proposal.getInitialCreditCommission())+"</html>");
+        String[] str;
+        int i = 1;
+        MyModel model = new MyModel();
+        table.setModel(model);
+        for (CreditPayment payment: payments) {
+            str = new String[]{
+                    "" + (i++),
+                    "" + dateFormat.format(payment.getDate()),
+                    "" + decimalFormat.format(payment.getAmount()),
+                    "" + decimalFormat.format(payment.getDebt()),
+                    "" + decimalFormat.format(payment.getInterest()),
+                    "" + decimalFormat.format(payment.getCommission()),
+                    "" + decimalFormat.format(payment.getTotalLeft())};
+            model.addData(str);
         }
     }
 }

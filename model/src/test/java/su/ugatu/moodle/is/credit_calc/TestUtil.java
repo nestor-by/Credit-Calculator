@@ -12,6 +12,7 @@ import java.util.List;
 public class TestUtil {
 
     public static void printProposal(CreditProposal proposal) {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         List<CreditPayment> payments = proposal.getPayments();
