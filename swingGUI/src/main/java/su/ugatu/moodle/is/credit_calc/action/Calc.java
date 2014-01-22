@@ -7,6 +7,7 @@ import su.ugatu.moodle.is.credit_calc.component.MyModel;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -56,28 +57,28 @@ public class Calc implements ActionListener{
 
         if(control(this.amount) && control(this.durationInMonths) && control(this.interestRate)){
 
-            application = new CreditApplicationImpl(Double.valueOf(this.amount.getText()));
+            application = new CreditApplicationImpl(new BigDecimal(this.amount.getText()));
             application.setDurationInMonths(Integer.valueOf(this.durationInMonths.getText()));
 
             offer = new CreditOfferImpl();
-            offer.setRate(Double.valueOf(this.interestRate.getText())/100);
+            offer.setRate(new BigDecimal(this.interestRate.getText()).divide(new BigDecimal(100)));
             if(control(this.onceCommissionAmount))
-                offer.setOnceCommissionAmount(Double.valueOf(this.onceCommissionAmount.getText()));
+                offer.setOnceCommissionAmount(new BigDecimal(this.onceCommissionAmount.getText()));
             else
                 this.onceCommissionAmount.setText("0");
 
             if(control(this.onceCommissionPercent))
-                offer.setOnceCommissionPercent(Double.valueOf(this.onceCommissionPercent.getText())/100);
+                offer.setOnceCommissionPercent(new BigDecimal(this.onceCommissionPercent.getText()).divide(new BigDecimal(100)));
             else
                 this.onceCommissionPercent.setText("0");
 
             if(control(this.monthlyCommissionPercent))
-                offer.setMonthlyCommissionPercent(Double.valueOf(this.monthlyCommissionPercent.getText())/100);
+                offer.setMonthlyCommissionPercent(new BigDecimal(this.monthlyCommissionPercent.getText()).divide(new BigDecimal(100)));
             else
                 this.monthlyCommissionPercent.setText("0");
 
             if(control(this.monthlyCommissionAmount))
-                offer.setMonthlyCommissionAmount(Double.valueOf(this.monthlyCommissionAmount.getText()));
+                offer.setMonthlyCommissionAmount(new BigDecimal(this.monthlyCommissionAmount.getText()));
             else
                 this.monthlyCommissionAmount.setText("0");
 
@@ -104,7 +105,7 @@ public class Calc implements ActionListener{
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         List<CreditPayment> payments = proposal.getPayments();
         label.setText("<html>Всего: "+decimalFormat.format(proposal.getTotalPayment())+" денежных единиц<br>"
-                +"Эффективная процентная ставка: "+(decimalFormat.format(proposal.getEffectiveRate() * 100)) + "%<br>" +
+                +"Эффективная процентная ставка: "+(decimalFormat.format(proposal.getEffectiveRate().doubleValue() * 100)) + "%<br>" +
                 "Комиссия: " + decimalFormat.format(proposal.getInitialCreditCommission())+"</html>");
         String[] str;
         int i = 1;
