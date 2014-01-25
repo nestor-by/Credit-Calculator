@@ -39,10 +39,10 @@
             </TextField>
             <TextField fx:id="durationInMonths" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <TextField fx:id="interestRate" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="onceCommissionAmount" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="onceCommissionPercent" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <TextField fx:id="monthlyCommissionAmount" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <TextField fx:id="monthlyCommissionPercent" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <TextField id="onceCommissionAmount" fx:id="onceCommissionPercent" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField id="onceCommissionPercent" fx:id="onceCommissionAmount" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField id="monthlyCommissionAmount" fx:id="monthlyCommissionPercent" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <TextField id="monthlyCommissionPercent" fx:id="monthlyCommissionAmount" prefWidth="-1.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Button id="res" fx:id="btn_res" mnemonicParsing="false" onAction="#onClickMethod" text="Рассчитать" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="8">
               <font>
                 <Font size="16.0" fx:id="x3" />
@@ -62,7 +62,7 @@
                 </Rectangle>
                 <Text fx:id="text_res" fill="#006610" layoutX="33.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Кредитный калькулятор преднозначен для">
                   <font>
-                    <Font name="Arial Bold Italic" size="20.0" />
+                    <Font name="Arial Bold Italic" size="19.0" />
                   </font>
                 </Text>
               </children>
