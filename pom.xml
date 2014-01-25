@@ -12,6 +12,7 @@
         <module>model</module>
         <module>swingGUI</module>
         <module>gwtGUI</module>
+        <module>fxGUI</module>
     </modules>
 
     <properties>

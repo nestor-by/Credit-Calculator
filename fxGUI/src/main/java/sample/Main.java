@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         stage.initStyle(StageStyle.TRANSPARENT);
-        Parent root = FXMLLoader.load(getClass().getResource("fxml/sample.fxml"));
+        Parent root = FXMLLoader.load(Thread.currentThread().getContextClassLoader().getResource("fxml/sample.fxml"));
         Scene scene = new Scene(root, stage.getWidth(), stage.getHeight(),Color.TRANSPARENT);
         stage.setScene(scene);
         //scene.getStylesheets().add("css/style.css");
