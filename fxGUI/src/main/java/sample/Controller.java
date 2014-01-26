@@ -8,6 +8,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebView;
+
 import su.ugatu.moodle.is.credit_calc.*;
 
 import java.math.BigDecimal;
@@ -21,6 +23,8 @@ public class Controller {
     private CreditOffer offer;
     private ObservableList<CreditData> creditData = FXCollections.observableArrayList();
     private ObservableList<String> model = FXCollections.observableArrayList();
+    @FXML
+    private WebView webView;
     @FXML
     private ImageView im_exit;
     @FXML
@@ -69,7 +73,7 @@ public class Controller {
         im_help.setImage(new Image("img/help.png"));
         im_exit.setImage(new Image("img/exit_def.png"));
         model.addAll("Аннуитетная", "Дифференцированная");
-        combo_type.setPrefSize(298,28);
+        combo_type.setPrefSize(298, 28);
         combo_type.setItems(model);
         combo_type.getSelectionModel().select(0);
         text_res.setText("Кредитный калькулятор позволяет\n" +
@@ -139,10 +143,10 @@ public class Controller {
         System.exit(0);
     }
 
-//    @FXML
-//    public void onClickHelp(){
-//        System.exit(0);
-//    }
+    @FXML
+    public void onClickHelp() throws Exception {
+        new HelpDialog();
+    }
 
     @FXML
     public void onHover(){

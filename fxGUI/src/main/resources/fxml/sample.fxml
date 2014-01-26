@@ -114,7 +114,7 @@
       </font>
     </Text>
     <ImageView fx:id="im_exit" fitHeight="36.0" fitWidth="50.0" onMouseClicked="#onExit" onMouseExited="#onHotHover" onMouseMoved="#onHover" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-    <ImageView fx:id="im_help" fitHeight="36.0" fitWidth="40.0" layoutX="1022.0" layoutY="0.0" onMouseExited="#onHotHoverHelp" onMouseMoved="#onHoverHelp" pickOnBounds="true" preserveRatio="true" />
+    <ImageView fx:id="im_help" fitHeight="36.0" fitWidth="40.0" layoutX="1022.0" layoutY="0.0" onMouseClicked="#onClickHelp" onMouseExited="#onHotHoverHelp" onMouseMoved="#onHoverHelp" pickOnBounds="true" preserveRatio="true" />
   </children>
   <stylesheets>
     <URL value="@../css/style.css" />

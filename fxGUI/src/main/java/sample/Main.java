@@ -15,6 +15,7 @@ public class Main extends Application {
                    initY = 0;
     @Override
     public void start(Stage stage) throws Exception{
+        stage.setTitle("Кредитный калькулятор");
         stage.initStyle(StageStyle.TRANSPARENT);
         Parent root = FXMLLoader.load(Thread.currentThread().getContextClassLoader().getResource("fxml/sample.fxml"));
         Scene scene = new Scene(root, stage.getWidth(), stage.getHeight(),Color.TRANSPARENT);
