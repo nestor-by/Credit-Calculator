@@ -11,36 +11,42 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class Main extends Application {
-    private double initX = 0,
-                   initY = 0;
+    private double initX = 0, // Инициализация главного окна по х
+                   initY = 0; // Инициализация главного окна по у
     @Override
     public void start(Stage stage) throws Exception{
         stage.setTitle("Кредитный калькулятор");
-        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.initStyle(StageStyle.TRANSPARENT); // Тип окна без дополнительных элементов окна
+        /*
+        В объект root заносятся файл "sample.fxml" по типу как xml,
+        в нем содержится все атрибутов компонента (кнопки, текстовые поля...)
+        такие как id, размер, какие менеджеры расположений, какой стиль(файл style.css)...
+         */
         Parent root = FXMLLoader.load(Thread.currentThread().getContextClassLoader().getResource("fxml/sample.fxml"));
+        // Установлении размера сцены
         Scene scene = new Scene(root, stage.getWidth(), stage.getHeight(),Color.TRANSPARENT);
-        stage.setScene(scene);
-        //scene.getStylesheets().add("css/style.css");
-        setUp(stage, scene);
+        stage.setScene(scene); // Добавления сцены в окно
+        setUp(stage, scene); // Метод перетаскивания окна
         scene.setFill(Color.TRANSPARENT);
-        stage.show();
+        stage.show(); // Вывод окна
     }
 
-
-
+    // Главный метод запуска
     public static void main(String[] args) {
         launch(args);
     }
 
+    // Метод перетаскивания окна
     public void setUp(final Stage stage, Scene scene){
+        // Нажатая окно
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent me) {
-                initX = me.getScreenX() - stage.getX();// - me.getSceneX();
+                initX = me.getScreenX() - stage.getX();
                 initY = me.getScreenY() - stage.getY();
             }
         });
-
+        // Разжатая окно
         scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
 
             public void handle(MouseEvent me) {

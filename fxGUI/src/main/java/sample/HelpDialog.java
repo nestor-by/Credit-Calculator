@@ -9,16 +9,17 @@ import javafx.stage.Stage;
 public class HelpDialog {
 
     public HelpDialog(){
-        Stage stage = new Stage();
+        Stage stage = new Stage(); // Создания окна
         stage.setTitle("Справка");
-        StackPane root = new StackPane();
-        WebView view = new WebView();
-        WebEngine engine = view.getEngine();
+        StackPane root = new StackPane(); // Создания панели
+        WebView view = new WebView(); // Создания веб компонента
+        WebEngine engine = view.getEngine(); // Создания вида
+        // Занесения в веб компонент файл "help.html"
         engine.load(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("html/help.html")));
-        root.getChildren().add(view);
+        root.getChildren().add(view); // Добавление панели в веб компонент
 
-        Scene scene = new Scene(root, 800, 600);
-        stage.setScene(scene);
-        stage.show();
+        Scene scene = new Scene(root, 800, 600); // Установка размера окна
+        stage.setScene(scene); // Добавление сцены в окно
+        stage.show(); // Вывод окна
     }
 }

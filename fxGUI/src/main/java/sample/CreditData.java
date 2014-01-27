@@ -2,16 +2,17 @@ package sample;
 
 
 public class CreditData {
-    private Integer num;
-    private String paymentDateCol,
-                   amountClo,
-                   principalCol,
-                   accruedInterestCol,
-                   monthlyCommissionCol,
-                   balancePayableCol;
+    private Integer num; // Номер платежа
+    private String paymentDateCol, //Дата платежа
+                   amountClo, //Сумма платежа
+                   principalCol, //Основной долг
+                   accruedInterestCol, //Начисленные проценты
+                   monthlyCommissionCol, //Ежемесячные комиссии
+                   balancePayableCol; //Остаток задолженности
     public CreditData(Integer num, String paymentDateCol, String amountClo, String principalCol, String accruedInterestCol,
                       String monthlyCommissionCol, String balancePayableCol){
 
+        ////// Инициализация всех данных //////
         this.num = num;
         this.paymentDateCol = paymentDateCol;
         this.amountClo = amountClo;
@@ -21,6 +22,7 @@ public class CreditData {
         this.balancePayableCol = balancePayableCol;
     }
 
+    //// Добавление мотодов геттеры и сеттеры для данный /////
     public Integer getNum() {
         return num;
     }
