@@ -12,9 +12,15 @@ import java.math.BigDecimal;
  */
 public class FinUtil {
 
+    /**
+     * Используйте для расчета эффективной процентоной ставки по предложению.
+     *
+     * @param proposal кредитное предложение.
+     * @return эффективаная процентная ставка в долях от единицы.
+     */
     public static BigDecimal calcEffectiveRate(CreditProposal proposal) {
         // Newton method
-        final double eps = 0.001d;
+        final double eps = 0.00001d; // погрешность
         double x = 1d;
         double currentEps = 1.0d;
         double er = 0d; // effective rate

@@ -4,9 +4,11 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.math.BigDecimal;
 
 /**
+ * Адаптер, используется для преобразования строки в xml в BigDecimal.
+ *
  * @author rinat.enikeev@gmail.com
- *         Date: 22.01.14
- *         Time: 21:30
+ * Date: 22.01.14
+ * Time: 21:30
  */
 public class BigDecimalAdapter extends XmlAdapter<String, BigDecimal> {
 
