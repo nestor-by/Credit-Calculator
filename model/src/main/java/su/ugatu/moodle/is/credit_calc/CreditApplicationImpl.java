@@ -4,20 +4,22 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * Реализация заявки на кредит.
+ *
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 18:50
  */
 public class CreditApplicationImpl implements CreditApplication {
 
-    private final BigDecimal amount;
-    private String currency;
-    private CreditPaymentType paymentType;
-    private Integer durationInMonths;
-    private Date startDate;
+    private final BigDecimal amount;       // размер кредита
+    private String currency;               // валюта кредита (ISO 4217)
+    private CreditPaymentType paymentType; // тип платежа (аннуитет, дифф.)
+    private Integer durationInMonths;      // срок кредита в месяцах
+    private Date startDate;                // дата получения кредита
 
-    public CreditApplicationImpl(final BigDecimal amount) {
-        this.amount = amount;
+    public CreditApplicationImpl(final BigDecimal anAmount) {
+        this.amount = anAmount;
     }
 
     @Override
@@ -31,8 +33,8 @@ public class CreditApplicationImpl implements CreditApplication {
     }
 
     @Override
-    public CreditApplication setCurrency(final String currency) {
-        this.currency = currency;
+    public CreditApplication setCurrency(final String aCurrency) {
+        this.currency = aCurrency;
         return this;
     }
 
@@ -42,8 +44,8 @@ public class CreditApplicationImpl implements CreditApplication {
     }
 
     @Override
-    public CreditApplication setPaymentType(final CreditPaymentType paymentType) {
-        this.paymentType = paymentType;
+    public CreditApplication setPaymentType(CreditPaymentType aPaymentType) {
+        this.paymentType = aPaymentType;
         return this;
     }
 
@@ -53,8 +55,8 @@ public class CreditApplicationImpl implements CreditApplication {
     }
 
     @Override
-    public CreditApplication setDurationInMonths(final Integer durationInMonths) {
-        this.durationInMonths = durationInMonths;
+    public CreditApplication setDurationInMonths(Integer aDurationInMonths) {
+        this.durationInMonths = aDurationInMonths;
         return this;
     }
 
@@ -63,8 +65,8 @@ public class CreditApplicationImpl implements CreditApplication {
         return startDate;
     }
 
-    public CreditApplication setStartDate(final Date startDate) {
-        this.startDate = startDate;
+    public CreditApplication setStartDate(final Date aStartDate) {
+        this.startDate = aStartDate;
         return this;
     }
 

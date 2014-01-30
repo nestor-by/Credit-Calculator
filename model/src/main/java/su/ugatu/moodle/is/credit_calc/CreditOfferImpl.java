@@ -1,5 +1,6 @@
 package su.ugatu.moodle.is.credit_calc;
 
+import su.ugatu.moodle.is.credit_calc.customer.Customer;
 import su.ugatu.moodle.is.util.BigDecimalAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -11,6 +12,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * Реализация кредитного оффера. ы
+ *
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 21:47
@@ -144,8 +147,8 @@ public class CreditOfferImpl implements CreditOffer {
     }
 
     @Override
-    public CreditOffer setMonthlyCommissionPercent(final BigDecimal monthlyCommissionPercent) {
-        this.monthlyCommissionPercent = monthlyCommissionPercent;
+    public CreditOffer setMonthlyCommissionPercent(final BigDecimal monthlyCommissPercent) {
+        this.monthlyCommissionPercent = monthlyCommissPercent;
         return this;
     }
 

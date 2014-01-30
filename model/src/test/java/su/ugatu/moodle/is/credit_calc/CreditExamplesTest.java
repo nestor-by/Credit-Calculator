@@ -3,11 +3,12 @@ package su.ugatu.moodle.is.credit_calc;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
+import su.ugatu.moodle.is.credit_calc.bank.BankFactory;
+import su.ugatu.moodle.is.credit_calc.bank.LendingBank;
+import su.ugatu.moodle.is.credit_calc.customer.Customer;
+import su.ugatu.moodle.is.credit_calc.customer.CustomerImpl;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * @author rinat.enikeev@gmail.com

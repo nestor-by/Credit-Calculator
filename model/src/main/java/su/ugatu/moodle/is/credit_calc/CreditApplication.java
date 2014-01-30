@@ -40,12 +40,13 @@ public interface CreditApplication {
     /**
      * Устанавить валюту заявки на кредит.
      * @param currency код валюты по ISO 4217.
-     * @return заявка на кредит.
+     * @return заявка на кредит, в целях fluent interface.
      */
     CreditApplication setCurrency(final String currency);
 
     /**
-     * Установить тип оплаты кредита (нопример, аннуитет или дифференцированный)
+     * Установить тип оплаты кредита (нопример, аннуитет или дифф.).
+     *
      * @param paymentType тип платежа.
      * @return заявка на кредит.
      */
@@ -54,14 +55,14 @@ public interface CreditApplication {
     /**
      * Установить срок выплаты кредита в месяцах.
      * @param durationInMonths количество месяцев.
-     * @return заявка на кредит.
+     * @return заявка на кредит, в целях fluent interface.
      */
     CreditApplication setDurationInMonths(final Integer durationInMonths);
 
     /**
      * Установить желаемую дату получения кредита.
      * @param startDate желаемая дата получения кредита.
-     * @return заявка на кредит.
+     * @return заявка на кредит, в целях fluent interface.
      */
     CreditApplication setStartDate(final Date startDate);
 }

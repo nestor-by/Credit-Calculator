@@ -1,4 +1,9 @@
-package su.ugatu.moodle.is.credit_calc;
+package su.ugatu.moodle.is.credit_calc.bank;
+
+import su.ugatu.moodle.is.credit_calc.CreditApplication;
+import su.ugatu.moodle.is.credit_calc.CreditOffer;
+import su.ugatu.moodle.is.credit_calc.CreditProposal;
+import su.ugatu.moodle.is.credit_calc.customer.Customer;
 
 import java.util.Collection;
 

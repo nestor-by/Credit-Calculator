@@ -1,4 +1,4 @@
-package su.ugatu.moodle.is.credit_calc;
+package su.ugatu.moodle.is.credit_calc.bank;
 
 /**
  * @author rinat.enikeev@gmail.com

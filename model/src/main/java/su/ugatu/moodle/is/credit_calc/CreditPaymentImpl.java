@@ -4,18 +4,20 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
+ * Реализация платежа по кредиту.
+ *
  * @author rinat.enikeev@gmail.com
  * Date: 14.01.14
  * Time: 22:26
  */
 public class CreditPaymentImpl implements CreditPayment {
 
-    private final BigDecimal amount;
-    private final Date date;
-    private BigDecimal debt;
-    private BigDecimal totalLeft;
-    private BigDecimal interest;
-    private BigDecimal commission;
+    private final BigDecimal amount; // суммарный размер платежа
+    private final Date date;         // дата платежа по графику
+    private BigDecimal debt;         // долговая часть
+    private BigDecimal totalLeft;    // всего осталось по кредиту
+    private BigDecimal interest;     // процентная часть платежа
+    private BigDecimal commission;   // комиссия
 
     public CreditPaymentImpl(final BigDecimal amount, final Date date) {
         this.amount = amount;

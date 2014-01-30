@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Immutable.
+ * Реализация кредитного предложения.
  *
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class CreditProposalImpl implements CreditProposal {
 
-    private final BigDecimal creditAmount;
-    private final BigDecimal effectiveRate;
-    private final BigDecimal totalPayment;
-    private final List<CreditPayment> payments;
-    private final BigDecimal initCredComm;
+    private final BigDecimal creditAmount;      // размер кредита
+    private final BigDecimal effectiveRate;     // эффективная процентная ставка
+    private final BigDecimal totalPayment;      // полная стоимость кредита
+    private final List<CreditPayment> payments; // список платежей
+    private final BigDecimal initCredComm;      // первоначальная комиссия
 
     CreditProposalImpl(final CreditApplication application,
                        final CreditOffer creditOffer) {

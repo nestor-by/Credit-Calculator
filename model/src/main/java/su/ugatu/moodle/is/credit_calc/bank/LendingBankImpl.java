@@ -1,4 +1,7 @@
-package su.ugatu.moodle.is.credit_calc;
+package su.ugatu.moodle.is.credit_calc.bank;
+
+import su.ugatu.moodle.is.credit_calc.*;
+import su.ugatu.moodle.is.credit_calc.customer.Customer;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

@@ -1,4 +1,6 @@
-package su.ugatu.moodle.is.credit_calc;
+package su.ugatu.moodle.is.credit_calc.bank;
+
+import su.ugatu.moodle.is.credit_calc.LendingBankImpl;
 
 import javax.xml.bind.JAXB;
 import javax.xml.bind.annotation.*;

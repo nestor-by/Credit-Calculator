@@ -1,6 +1,8 @@
 package su.ugatu.moodle.is.credit_calc;
 
 import org.junit.Test;
+import su.ugatu.moodle.is.credit_calc.bank.BankFactory;
+import su.ugatu.moodle.is.credit_calc.bank.LendingBank;
 
 import java.util.HashSet;
 import java.util.Set;
