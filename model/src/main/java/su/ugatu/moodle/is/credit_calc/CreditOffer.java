@@ -6,6 +6,8 @@ import su.ugatu.moodle.is.credit_calc.customer.Customer;
 import java.math.BigDecimal;
 
 /**
+ * Оффер на кредит.
+ *
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
  * Time: 21:47

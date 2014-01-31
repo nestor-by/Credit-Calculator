@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 13.01.14
  * Time: 18:50
  */
-public class CreditProposalImpl implements CreditProposal {
+class CreditProposalImpl implements CreditProposal {
 
     private final BigDecimal creditAmount;      // размер кредита
     private final BigDecimal effectiveRate;     // эффективная процентная ставка

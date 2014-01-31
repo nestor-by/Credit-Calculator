@@ -10,7 +10,7 @@ import java.util.Date;
  * Date: 14.01.14
  * Time: 22:26
  */
-public class CreditPaymentImpl implements CreditPayment {
+class CreditPaymentImpl implements CreditPayment {
 
     private final BigDecimal amount; // суммарный размер платежа
     private final Date date;         // дата платежа по графику
@@ -19,7 +19,7 @@ public class CreditPaymentImpl implements CreditPayment {
     private BigDecimal interest;     // процентная часть платежа
     private BigDecimal commission;   // комиссия
 
-    public CreditPaymentImpl(final BigDecimal amount, final Date date) {
+    CreditPaymentImpl(final BigDecimal amount, final Date date) {
         this.amount = amount;
         this.date = date;
     }
