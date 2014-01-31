@@ -1,7 +1,5 @@
 package su.ugatu.moodle.is.credit_calc.bank;
 
-import su.ugatu.moodle.is.credit_calc.bank.Bank;
-
 /**
  * @author rinat.enikeev@gmail.com
  * Date: 13.01.14
