@@ -37,9 +37,9 @@ public class CommissionTest {
     @Test
     public void annuityCommissionTest() {
         application.setPaymentType(CreditPaymentType.ANNUITY);
-//        TestUtil.printApplication(application);
+        TestUtil.printApplication(application);
         CreditProposal proposal = offer.calculateProposal(application);
-//        assertEquals(proposal.getEffectiveRate(), (new BigDecimal("0.5068")));
+        assertEquals(proposal.getEffectiveRate(), (new BigDecimal("0.5068")));
 
         TestUtil.printProposal(proposal);
     }
