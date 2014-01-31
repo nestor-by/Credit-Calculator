@@ -51,14 +51,14 @@ public class CreditCalculatorView extends Composite {
 
     @UiHandler("calc")
     void onCalcClick(ClickEvent event) {
-        CreditApplication app = new CreditApplicationImpl(amount.getValue());
+        CreditApplication app = new CreditApplicationImpl(new BigDecimal(amount.getValue()));
         app.setDurationInMonths(duration.getValue());
         if (paymentType.getSelectedIndex() == 0) {
             app.setPaymentType(CreditPaymentType.ANNUITY);
         } else if (paymentType.getSelectedIndex() == 1) {
             app.setPaymentType(CreditPaymentType.DIFFERENTIAL);
         }
-        CreditOffer offer = new CreditOfferImpl().setRate(rate.getValue() / 100d);
+        CreditOffer offer = new CreditOfferImpl().setRate(new BigDecimal(rate.getValue() / 100d));
         CreditProposal proposal = offer.calculateProposal(app);
 
         if (tableOfPayments != null) mainPanel.remove(tableOfPayments);
