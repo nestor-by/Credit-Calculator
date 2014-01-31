@@ -18,6 +18,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <gwt.version>2.5.1</gwt.version>
+        <javafx.path>C:\Program Files\Java\jre7\lib\jfxrt.jar</javafx.path>
     </properties>
 
     <dependencies>
@@ -58,6 +59,13 @@
                 <groupId>su.ugatu.moodle.is.credit-calc</groupId>
                 <artifactId>model</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.oracle</groupId>
+                <artifactId>javaFX</artifactId>
+                <version>2.2</version>
+                <scope>system</scope>
+                <systemPath>${javafx.path}</systemPath>
             </dependency>
         </dependencies>
     </dependencyManagement>
