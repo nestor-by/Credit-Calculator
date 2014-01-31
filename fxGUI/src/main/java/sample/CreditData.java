@@ -1,6 +1,8 @@
 package sample;
 
-
+/**
+ * @return Класс отвечает за типы данных в таблице и их get/set каждого поле {@link #CreditData}
+ */
 public class CreditData {
     private Integer num; // Номер платежа
     private String paymentDateCol, //Дата платежа

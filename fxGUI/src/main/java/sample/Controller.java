@@ -16,13 +16,16 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
+/**
+ * @return Этот класс контролируете все событии и действия пользователя
+ * {@link Controller}
+ */
 public class Controller {
     private CreditApplication application;
     private CreditOffer offer;
-    // Коллекция данных о кредите
+    //Коллекция данных о кредите
     private ObservableList<CreditData> creditData = FXCollections.observableArrayList();
-    // Коллекция типы данных о кредите
+    //Коллекция типы данных о кредите
     private ObservableList<String> model = FXCollections.observableArrayList();
 
     @FXML
@@ -64,6 +67,9 @@ public class Controller {
     @FXML
     private TextField monthlyCommissionPercent; // Текстовое поле  Ежемесячная комиссия (в процентах)
 
+    /**
+     * @return Метод для начальной инициализации данных {@link #initialize()}
+     */
     @FXML
     private void initialize() {
         // Инициализация текстур
@@ -93,8 +99,9 @@ public class Controller {
         // Заполняем таблицу данными
         table.setItems(creditData);
     }
-
-    // Метод выбора схему погашения
+    /**
+     * @return Метод выбора схему погашения
+     */
     private void initData() {
 
         if(combo_type.getSelectionModel().isSelected(1)){
@@ -109,8 +116,11 @@ public class Controller {
         }
     }
 
+    /**
+     * @return Событие расчёта данных и занесение их в таблицу
+     */
     @FXML
-    public void onClickMethod(){ // Метод расчёта
+    public void onClickMethod(){
         creditData.clear(); // Очистка таблицы
         if(control(amount) && control(durationInMonths) && control(interestRate)){ // Если все три поле числа то..
             application = new CreditApplicationImpl(new BigDecimal(amount.getText())); // Возвращение текста сумма кредита в расчет
@@ -140,37 +150,62 @@ public class Controller {
         }
 
     }
+
+    /**
+     * @return Метод выхода из программы
+     */
     @FXML
-    public void onExit(){ // Метод выхода из программы
+    public void onExit(){
         System.exit(0);
     }
 
+    /**
+     * @return Метод вызова справки
+     * @throws Exception
+     */
     @FXML
-    public void onClickHelp() throws Exception { // Метод вызова справки
+    public void onClickHelp() throws Exception {
         new HelpDialog(); // Объект окна справки
     }
 
+    /**
+     * @return Метод наведение курсора на кнопку выхода
+     */
     @FXML
-    public void onHover(){ // Метод наведение курсора на кнопку выхода
+    public void onHover(){
         im_exit.setImage(new Image("img/exit.png"));
         im_help.setImage(new Image("img/help_exit.png"));
     }
+
+    /**
+     * @return Метод деактивированные курсора на кнопку выхода
+     */
     @FXML
-    public void onHotHover(){ // Метод деактивированные курсора на кнопку выхода
+    public void onHotHover(){
         im_exit.setImage(new Image("img/exit_def.png"));
         im_help.setImage(new Image("img/help.png"));
     }
 
+    /**
+     * @return Метод наведение курсора на кнопку справки
+     */
     @FXML
-    public void onHoverHelp(){ // Метод наведение курсора на кнопку справки
+    public void onHoverHelp(){
         im_help.setImage(new Image("img/help_hover.png"));
     }
+
+    /**
+     * @return Метод деактивированные курсора на кнопку справки
+     */
     @FXML
-    public void onHotHoverHelp(){ // Метод деактивированные курсора на кнопку справки
+    public void onHotHoverHelp(){
         im_help.setImage(new Image("img/help.png"));
     }
 
-    // Метод проверки на число
+    /**
+     * @param tf входной параметр проверки
+     * @return Метод проверки на число
+     */
     private boolean control(TextField tf){
         double d;
         try {
@@ -183,7 +218,11 @@ public class Controller {
         return true;
     }
 
-    private void printProposal(CreditProposal proposal){ // Метод печать результата
+    /**
+     * @return Метод печать результата
+     * @param proposal - Заявка на получение кредита
+     */
+    private void printProposal(CreditProposal proposal){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");// Форматирования даты
         DecimalFormat decimalFormat = new DecimalFormat("#.##"); // Форматирования числа
         List<CreditPayment> payments = proposal.getPayments();

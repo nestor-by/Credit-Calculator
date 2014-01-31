@@ -10,9 +10,18 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+/**
+ * @return Главный класс GUI. Оно начинается с метода {@link #start(javafx.stage.Stage)}
+ */
 public class Main extends Application {
     private double initX = 0, // Инициализация главного окна по х
                    initY = 0; // Инициализация главного окна по у
+
+    /**
+     * @return Метод инициализации компонентов, стилей, сцен.
+     * @param stage - главное окно
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception{
         stage.setTitle("Кредитный калькулятор");
@@ -31,12 +40,18 @@ public class Main extends Application {
         stage.show(); // Вывод окна
     }
 
-    // Главный метод запуска
+    /**
+     * @return Главный метод запуска
+     */
     public static void main(String[] args) {
         launch(args);
     }
 
-    // Метод перетаскивания окна
+    /**
+     * @return Метод перетаскивания окна
+     * @param stage - главное окно
+     * @param scene - Контейнер(сцена) которые расположена компоненты
+     */
     public void setUp(final Stage stage, Scene scene){
         // Нажатая окно
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {

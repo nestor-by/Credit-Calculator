@@ -6,6 +6,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
+/**
+ * @return Класс выводит окно справки {@link #HelpDialog()}
+ */
 public class HelpDialog {
 
     public HelpDialog(){
