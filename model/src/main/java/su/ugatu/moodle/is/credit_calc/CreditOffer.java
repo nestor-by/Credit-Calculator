@@ -1,8 +1,5 @@
 package su.ugatu.moodle.is.credit_calc;
 
-
-import su.ugatu.moodle.is.credit_calc.customer.Customer;
-
 import java.math.BigDecimal;
 
 /**
@@ -78,18 +75,6 @@ public interface CreditOffer {
      * @return предложение по кредиту.
      */
     CreditProposal calculateProposal(CreditApplication application);
-
-    /**
-     * Подготавливает предложение по кредиту, заполняя неустановленный поля
-     * заявки на значения по умолчанию и рассчитывая график и размер платежей.
-     *
-     * @param customer          заявитель.
-     * @param creditApplication заявка.
-     * @return предложение {@link CreditProposal} или {@code null}, если
-     * заявка не соответствует офферу.
-     */
-    CreditProposal calculateProposal(Customer customer,
-                                     CreditApplication creditApplication);
 
     /**
      * Устанавливает ставку оффера по кредиту, в долях от единицы.

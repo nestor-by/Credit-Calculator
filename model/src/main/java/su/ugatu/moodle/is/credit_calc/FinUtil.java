@@ -1,8 +1,5 @@
 package su.ugatu.moodle.is.credit_calc;
 
-import su.ugatu.moodle.is.util.CalendarUtil;
-import su.ugatu.moodle.is.util.Constants;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;

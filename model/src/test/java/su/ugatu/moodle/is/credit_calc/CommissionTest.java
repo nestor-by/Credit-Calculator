@@ -3,7 +3,6 @@ package su.ugatu.moodle.is.credit_calc;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import su.ugatu.moodle.is.util.Constants;
 
 import java.math.BigDecimal;
 
