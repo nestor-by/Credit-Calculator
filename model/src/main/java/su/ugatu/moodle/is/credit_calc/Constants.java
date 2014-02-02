@@ -3,6 +3,8 @@ package su.ugatu.moodle.is.credit_calc;
 import java.math.RoundingMode;
 
 /**
+ * Константы приложения.
+ *
  * @author rinat.enikeev@gmail.com
  * Date: 22.01.14
  * Time: 20:46

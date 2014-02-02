@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Реализует методы финансовых расчетов.
+ *
  * @author rinat.enikeev@gmail.com
  * Date: 18.01.14
  * Time: 23:30

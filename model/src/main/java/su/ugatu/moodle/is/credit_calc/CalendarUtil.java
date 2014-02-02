@@ -3,6 +3,8 @@ package su.ugatu.moodle.is.credit_calc;
 import java.util.Date;
 
 /**
+ * Утилита, реализует методы работы с датами.
+ *
  * @author rinat.enikeev@gmail.com
  * Date: 14.01.14
  * Time: 22:04
