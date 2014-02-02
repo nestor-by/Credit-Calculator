@@ -4,8 +4,6 @@ import su.ugatu.moodle.is.util.CalendarUtil;
 import su.ugatu.moodle.is.util.Constants;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,85 +14,23 @@ import java.util.List;
  */
 class FinUtil {
 
-
+    /**
+     * Рассчитать платежи по кредиту по аннуитетной схеме.
+     *
+     * @param creditAmount размер кредита.
+     * @param durationInMonths продолжительность в месяцах.
+     * @param date дата.
+     * @param rate ставка кредита в долях от единицы.
+     * @param monthlyCommission ежемесячная комиссия.
+     * @return упорядоченный по дате список платежей по кредиту.
+     */
     static List<CreditPayment> calcAnnuityPayments
                                     (final BigDecimal creditAmount,
                                      final int durationInMonths,
                                      Date date,
                                      final BigDecimal rate,
                                      final BigDecimal monthlyCommission) {
-
-        ArrayList<CreditPayment> payments = new ArrayList<CreditPayment>();
-
-        BigDecimal monthlyRate = rate.divide(
-                new BigDecimal(CalendarUtil.NUMBER_OF_MONTHS),
-                Constants.CALC_SCALE, Constants.ROUNDING_MODE);
-
-        BigDecimal denominator = new BigDecimal(1);
-        BigDecimal pow = monthlyRate.add(new BigDecimal(1))
-                .pow(-durationInMonths, MathContext.DECIMAL64);
-        denominator = denominator.subtract(pow);
-
-        BigDecimal amount = creditAmount.multiply(monthlyRate)
-                .divide(denominator,
-                        Constants.OUTPUT_AMOUNT_SCALE,
-                        Constants.ROUNDING_MODE);
-
-        BigDecimal withCommAmount = amount;
-        if (monthlyCommission != null) {
-            withCommAmount = withCommAmount.add(monthlyCommission);
-        }
-
-        BigDecimal base = creditAmount;
-
-        CreditPayment lastPayment = null;
-        for (int i = 0; i < durationInMonths; i++) {
-            BigDecimal interest = base.multiply(monthlyRate);
-            base = base.add(interest);
-
-            date = CalendarUtil.nextMonthDate(date);
-            CreditPayment payment = new CreditPaymentImpl(
-                    withCommAmount.setScale(
-                            Constants.OUTPUT_AMOUNT_SCALE),
-                    date);
-
-            payment.setDebt(amount.subtract(interest)
-                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                            Constants.ROUNDING_MODE));
-
-            payment.setInterest(interest
-                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                            Constants.ROUNDING_MODE));
-
-            base = base.subtract(amount);
-            payment.setTotalLeft(base.setScale
-                    (Constants.OUTPUT_AMOUNT_SCALE,
-                            Constants.ROUNDING_MODE));
-
-            if (monthlyCommission != null) {
-                payment.setCommission(monthlyCommission
-                        .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                                Constants.ROUNDING_MODE));
-            }
-            payments.add(payment);
-            lastPayment = payment;
-        }
-        // fixme костыль
-
-        if (lastPayment != null) {
-            boolean lastPaymentLessThanOutputScale =
-                    lastPayment.getTotalLeft().compareTo(
-                            new BigDecimal(1
-                                    / Math.pow(10, Constants.OUTPUT_AMOUNT_SCALE)))
-                            < 0;
-            if (lastPaymentLessThanOutputScale) {
-                lastPayment.setTotalLeft(
-                        new BigDecimal(0)
-                                .setScale(Constants.OUTPUT_AMOUNT_SCALE));
-            }
-        }
-
-        return payments;
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     static List<CreditPayment> calcDifferentialPayments(final BigDecimal creditAmount,
@@ -103,69 +39,7 @@ class FinUtil {
                                           final BigDecimal rate,
                                           final BigDecimal monthlyCommission) {
 
-        ArrayList<CreditPayment> payments = new ArrayList<CreditPayment>();
-
-        BigDecimal monthlyRate = rate.divide(
-                new BigDecimal(CalendarUtil.NUMBER_OF_MONTHS),
-                Constants.CALC_SCALE, Constants.ROUNDING_MODE);
-        BigDecimal durationInMonthsBD = new BigDecimal(durationInMonths);
-        BigDecimal base = creditAmount;
-
-        for (int k = 1; k <= durationInMonths; k++) {
-            BigDecimal interest = base.multiply(monthlyRate);
-            base = base.add(interest);
-
-            BigDecimal firstSum = new BigDecimal(1)
-                    .divide(durationInMonthsBD,
-                            Constants.CALC_SCALE,
-                            Constants.ROUNDING_MODE);
-
-            firstSum = firstSum.add(monthlyRate).multiply(creditAmount);
-
-            BigDecimal secondSum = creditAmount
-                    .multiply(monthlyRate)
-                    .divide(durationInMonthsBD,
-                            Constants.CALC_SCALE,
-                            Constants.ROUNDING_MODE)
-                    .multiply(new BigDecimal(k - 1));
-
-            BigDecimal amount = firstSum.subtract(secondSum);
-
-            BigDecimal withCommAmount = amount;
-            if (monthlyCommission != null) {
-                withCommAmount = withCommAmount.add(monthlyCommission);
-            }
-
-            date = CalendarUtil.nextMonthDate(date);
-            CreditPayment payment
-                    = new CreditPaymentImpl(withCommAmount
-                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                            Constants.ROUNDING_MODE),
-                    date);
-            payment.setDebt(creditAmount
-                    .divide(durationInMonthsBD,
-                            Constants.CALC_SCALE,
-                            Constants.ROUNDING_MODE)
-                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                            Constants.ROUNDING_MODE));
-
-            base = base.subtract(amount);
-            payment.setInterest(interest
-                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                            Constants.ROUNDING_MODE));
-
-            payment.setTotalLeft(base
-                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                            Constants.ROUNDING_MODE));
-            if (monthlyCommission != null) {
-                payment.setCommission(monthlyCommission
-                        .setScale(Constants.OUTPUT_AMOUNT_SCALE,
-                                Constants.ROUNDING_MODE));
-            }
-                    payments.add(payment);
-        }
-
-        return payments;
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     static BigDecimal calcTotalAmount(final List<CreditPayment> payments) {
@@ -178,6 +52,13 @@ class FinUtil {
     }
 
 
+    /**
+     * Рассчитывает ежемесячную комиссию по офферу.
+     *
+     * @param creditAmount размер кредита.
+     * @param creditOffer оффер.
+     * @return ежемесячная комиссия.
+     */
     static BigDecimal calcMonthlyCommission(final BigDecimal creditAmount,
                                             final CreditOffer creditOffer) {
 
@@ -195,6 +76,13 @@ class FinUtil {
         return monComm.setScale(Constants.OUTPUT_AMOUNT_SCALE);
     }
 
+    /**
+     * Рассчитывает изначальную комиссию (не входит в ежемесячные платежи).
+     *
+     * @param creditAmount размер кредита.
+     * @param creditOffer оффер.
+     * @return начальная комиссия (не входит в ежемесячные платежи).
+     */
     static BigDecimal calcInitialCommission(final BigDecimal creditAmount,
                                             final CreditOffer creditOffer) {
 
