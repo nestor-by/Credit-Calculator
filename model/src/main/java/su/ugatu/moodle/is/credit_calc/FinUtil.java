@@ -39,7 +39,69 @@ class FinUtil {
                                           final BigDecimal rate,
                                           final BigDecimal monthlyCommission) {
 
-        throw new UnsupportedOperationException("not yet implemented");
+        ArrayList<CreditPayment> payments = new ArrayList<CreditPayment>();
+
+        BigDecimal monthlyRate = rate.divide(
+                new BigDecimal(CalendarUtil.NUMBER_OF_MONTHS),
+                Constants.CALC_SCALE, Constants.ROUNDING_MODE);
+        BigDecimal durationInMonthsBD = new BigDecimal(durationInMonths);
+        BigDecimal base = creditAmount;
+
+        for (int k = 1; k <= durationInMonths; k++) {
+            BigDecimal interest = base.multiply(monthlyRate);
+            base = base.add(interest);
+
+            BigDecimal firstSum = new BigDecimal(1)
+                    .divide(durationInMonthsBD,
+                            Constants.CALC_SCALE,
+                            Constants.ROUNDING_MODE);
+
+            firstSum = firstSum.add(monthlyRate).multiply(creditAmount);
+
+            BigDecimal secondSum = creditAmount
+                    .multiply(monthlyRate)
+                    .divide(durationInMonthsBD,
+                            Constants.CALC_SCALE,
+                            Constants.ROUNDING_MODE)
+                    .multiply(new BigDecimal(k - 1));
+
+            BigDecimal amount = firstSum.subtract(secondSum);
+
+            BigDecimal withCommAmount = amount;
+            if (monthlyCommission != null) {
+                withCommAmount = withCommAmount.add(monthlyCommission);
+            }
+
+            date = CalendarUtil.nextMonthDate(date);
+            CreditPayment payment
+                    = new CreditPaymentImpl(withCommAmount
+                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                            Constants.ROUNDING_MODE),
+                    date);
+            payment.setDebt(creditAmount
+                    .divide(durationInMonthsBD,
+                            Constants.CALC_SCALE,
+                            Constants.ROUNDING_MODE)
+                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                            Constants.ROUNDING_MODE));
+
+            base = base.subtract(amount);
+            payment.setInterest(interest
+                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                            Constants.ROUNDING_MODE));
+
+            payment.setTotalLeft(base
+                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                            Constants.ROUNDING_MODE));
+            if (monthlyCommission != null) {
+                payment.setCommission(monthlyCommission
+                        .setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                                Constants.ROUNDING_MODE));
+            }
+                    payments.add(payment);
+        }
+
+        return payments;
     }
 
     static BigDecimal calcTotalAmount(final List<CreditPayment> payments) {
