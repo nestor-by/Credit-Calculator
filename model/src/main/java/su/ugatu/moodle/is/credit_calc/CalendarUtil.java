@@ -1,4 +1,4 @@
-package su.ugatu.moodle.is.util;
+package su.ugatu.moodle.is.credit_calc;
 
 import java.util.Date;
 

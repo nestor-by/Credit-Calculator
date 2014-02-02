@@ -2,7 +2,6 @@ package su.ugatu.moodle.is.credit_calc;
 import static org.mockito.Mockito.*;
 
 import org.junit.Test;
-import su.ugatu.moodle.is.util.CalendarUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

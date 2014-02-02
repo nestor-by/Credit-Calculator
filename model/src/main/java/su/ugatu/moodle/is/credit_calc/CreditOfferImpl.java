@@ -1,13 +1,5 @@
 package su.ugatu.moodle.is.credit_calc;
 
-import su.ugatu.moodle.is.credit_calc.customer.Customer;
-import su.ugatu.moodle.is.util.BigDecimalAdapter;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -18,40 +10,20 @@ import java.util.Date;
  * Date: 13.01.14
  * Time: 21:47
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name = "creditOffer")
 public class CreditOfferImpl implements CreditOffer {
 
     private static final CreditPaymentType DEFAULT_PAYMENT_TYPE = CreditPaymentType.ANNUITY;
 
-    @XmlElement
     private String name;
-    @XmlElement
-    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal minAmount;
-    @XmlElement
-    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal maxAmount;
-    @XmlElement
-    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal rate;
-    @XmlElement
     private String currencyName;
-    @XmlElement
     private Integer minMonthDuration;
-    @XmlElement
     private Integer maxMonthDuration;
-    @XmlElement
-    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal onceCommissionAmount;
-    @XmlElement
-    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal onceCommissionPercent;
-    @XmlElement
-    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal monthlyCommissionAmount;
-    @XmlElement
-    @XmlJavaTypeAdapter(BigDecimalAdapter.class)
     private BigDecimal monthlyCommissionPercent;
 
     @Override
@@ -111,15 +83,9 @@ public class CreditOfferImpl implements CreditOffer {
 
     @Override
     public CreditProposal calculateProposal(final CreditApplication application) {
-        return calculateProposal(null, application);
-    }
-
-    @Override
-    public CreditProposal calculateProposal(final Customer customer,
-                                            final CreditApplication creditApplication) {
-        if (!applicationCorrespondsToOffer(creditApplication)) return null;
-        configureApplicationBlankParams(creditApplication);
-        return new CreditProposalImpl(creditApplication, this);
+        if (!applicationCorrespondsToOffer(application)) return null;
+        configureApplicationBlankParams(application);
+        return new CreditProposalImpl(application, this);
     }
 
     @Override
