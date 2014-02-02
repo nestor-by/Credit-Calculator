@@ -3,7 +3,6 @@ import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 import su.ugatu.moodle.is.util.CalendarUtil;
-import su.ugatu.moodle.is.util.FinUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
