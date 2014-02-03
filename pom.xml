@@ -11,13 +11,11 @@
     <modules>
         <module>model</module>
         <module>swingGUI</module>
-        <module>gwtGUI</module>
         <module>fxGUI</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <gwt.version>2.5.1</gwt.version>
     </properties>
 
     <dependencies>
@@ -37,12 +35,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.google.gwt</groupId>
-                <artifactId>gwt-user</artifactId>
-                <version>${gwt.version}</version>
-                <scope>provided</scope>
-            </dependency>
             <dependency>
                 <groupId>su.ugatu.moodle.is.credit-calc</groupId>
                 <artifactId>model</artifactId>
