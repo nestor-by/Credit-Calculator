@@ -101,8 +101,7 @@
     -fx-background-insets: 0,1,1;
     -fx-text-fill: black;
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );
-    -fx-font-size: 16pt;
-
+    -fx-font-size: 14pt;
 }
 
 .table-row-cell:empty { -fx-background-color: #ffffff; }
@@ -111,6 +110,7 @@
 .table-view .table-cell {
     -fx-text-fill: #043b00;
     -fx-font-size: 17pt;
+    -fx-alignment: CENTER;
     -fx-font-family: "Consolas";
 }
 
