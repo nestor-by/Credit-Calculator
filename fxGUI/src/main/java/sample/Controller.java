@@ -97,6 +97,7 @@ public class Controller {
         balancePayableCol.setCellValueFactory(new PropertyValueFactory<CreditData, String>("balancePayableCol"));
 
         // Заполняем таблицу данными
+        table.setPlaceholder(new Text(""));
         table.setItems(creditData);
     }
     /**
