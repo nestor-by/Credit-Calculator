@@ -17,6 +17,7 @@ class CreditProposalImpl implements CreditProposal {
     private final BigDecimal totalPayment;      // полная стоимость кредита
     private final List<CreditPayment> payments; // список платежей
     private final BigDecimal initCredComm;      // первоначальная комиссия
+    private final BigDecimal totalCredComm;     // итоговая комиссия
 
     /**
      *
@@ -39,6 +40,7 @@ class CreditProposalImpl implements CreditProposal {
         BigDecimal monthlyCommission = FinUtil.calcMonthlyCommission(
                                                         application.getAmount(),
                                                         creditOffer);
+        this.totalCredComm=this.initCredComm.add(monthlyCommission.multiply(new BigDecimal(application.getDurationInMonths())));
         switch (application.getPaymentType()) {
             case ANNUITY: {
                 this.payments = FinUtil.calcAnnuityPayments(
@@ -64,7 +66,7 @@ class CreditProposalImpl implements CreditProposal {
                        application.getPaymentType() + " type is not supported");
         }
 
-        this.totalPayment  = FinUtil.calcTotalAmount(payments);
+        this.totalPayment  = FinUtil.calcTotalAmount(payments).add(this.initCredComm);
         this.effectiveRate = FinUtil.calcEffectiveRate(this);
     }
 
@@ -92,7 +94,9 @@ class CreditProposalImpl implements CreditProposal {
     public BigDecimal getInitialCreditCommission() {
         return initCredComm;
     }
-
+    public BigDecimal getTotalCreditCommission() {
+        return totalCredComm;
+    }
     /**
      * Проверяет заполненность свойств заявки на кредит.
      *

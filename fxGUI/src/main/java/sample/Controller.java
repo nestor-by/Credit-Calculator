@@ -229,7 +229,7 @@ public class Controller {
         List<CreditPayment> payments = proposal.getPayments();
         text_res.setText("Всего: "+decimalFormat.format(proposal.getTotalPayment())+" денежных единиц\n"
                         +"Эффективная процентная ставка: "+(decimalFormat.format(proposal.getEffectiveRate().doubleValue() * 100)) + "%\n"
-                        +"Комиссия: " + decimalFormat.format(proposal.getInitialCreditCommission()));
+                        +"Комиссия: " + decimalFormat.format(proposal.getTotalCreditCommission()));
         int i = 1;
         // Вывод результатов на таблицу
         for (CreditPayment payment: payments) {
