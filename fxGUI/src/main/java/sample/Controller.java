@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -7,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 import su.ugatu.moodle.is.credit_calc.*;
@@ -21,6 +24,8 @@ import java.util.List;
  * {@link Controller}
  */
 public class Controller {
+
+
     private CreditApplication application;
     private CreditOffer offer;
     //Коллекция данных о кредите
@@ -28,6 +33,12 @@ public class Controller {
     //Коллекция типы данных о кредите
     private ObservableList<String> model = FXCollections.observableArrayList();
 
+    @FXML
+    private Button btn_res;
+    @FXML
+    private GridPane grid_pan;
+    @FXML
+    private Label schema;
     @FXML
     private ImageView im_exit; // Текстура кнопки выхода
     @FXML
@@ -67,6 +78,15 @@ public class Controller {
     @FXML
     private TextField monthlyCommissionPercent; // Текстовое поле  Ежемесячная комиссия (в процентах)
 
+    @FXML
+    private Label iab_one_pr;// Текст Разовая комиссия (в процентах)
+    @FXML
+    private Label lab_one_mny;// Текст Разовая комиссия (в деньгах)
+    @FXML
+    private Label lab_month_pr;// Текст Ежемесячная комиссия (в процентах)
+    @FXML
+    private Label lab_month_mny;// Текст Ежемесячная комиссия (в деньгах)
+
     /**
      * @return Метод для начальной инициализации данных {@link #initialize()}
      */
@@ -79,13 +99,26 @@ public class Controller {
         model.addAll("Аннуитетная", "Дифференцированная");
         combo_type.setPrefSize(298, 28);
         combo_type.setItems(model); // Добавление данные схем погашения
-        combo_type.getSelectionModel().select(0); // Начальная состояния "Аннуитетная"
+        //combo_type.getSelectionModel().select(0); // Начальная состояния "Аннуитетная"
+        selectType(0); // ночальная положения компонентов
+
+        combo_type.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String s2) {
+                if(s2.equals("Дифференцированная")){
+                    selectType(1);
+                }
+                else {
+                    selectType(2);
+                }
+            }
+        });
         // Инициализация текста
         text_res.setText("Кредитный калькулятор позволяет\n" +
-                         "построить график погашения\n" +
-                         "произвольного кредита,а также\n" +
-                         "рассчитать эффективную процентную\n" +
-                         "ставку по кредиту.");
+                "построить график погашения\n" +
+                "произвольного кредита,а также\n" +
+                "рассчитать эффективную процентную\n" +
+                "ставку по кредиту.");
 
         // Устанавливаем тип и значение которое должно хранится в колонке
         num.setCellValueFactory(new PropertyValueFactory<CreditData, Integer>("num"));
@@ -123,7 +156,7 @@ public class Controller {
     @FXML
     public void onClickMethod(){
         creditData.clear(); // Очистка таблицы
-        if(control(amount) && control(durationInMonths) && control(interestRate)){ // Если все три поле числа то..
+        if(control(amount) && control(durationInMonths) && control(interestRate) && !combo_type.getSelectionModel().isSelected(-1)){ // Если все три поле числа то..
             application = new CreditApplicationImpl(new BigDecimal(amount.getText())); // Возвращение текста сумма кредита в расчет
             application.setDurationInMonths(Integer.valueOf(durationInMonths.getText())); // Возвращение текста срок кредита в расчет
             offer = new CreditOfferImpl();
@@ -245,4 +278,86 @@ public class Controller {
 
     }
 
+    /**
+     * @return Метод расстановки компонентов в зависемости comboBox
+     * @param select - индекатор расположения
+     */
+    private void selectType(int select){
+        // если выбрано Дифференцированная
+        if(select == 1){
+            // Установка видемости текставых полей
+            lab_one_mny.setVisible(false);
+            onceCommissionAmount.setVisible(false);
+            onceCommissionAmount.setText("");
+            iab_one_pr.setVisible(false);
+            onceCommissionPercent.setVisible(false);
+            onceCommissionPercent.setText("");
+            lab_month_mny.setVisible(true);
+            monthlyCommissionAmount.setVisible(true);
+            monthlyCommissionAmount.setText("");
+            lab_month_pr.setVisible(false);
+            monthlyCommissionPercent.setVisible(false);
+            monthlyCommissionPercent.setText("");
+
+            // Перестановка мест компонентов
+            grid_pan.getChildren().removeAll(monthlyCommissionAmount,
+                    lab_month_mny,schema,combo_type,btn_res,onceCommissionPercent,
+                    iab_one_pr,onceCommissionAmount,lab_one_mny,monthlyCommissionPercent,
+                    lab_month_pr);
+            grid_pan.add(monthlyCommissionAmount,1,3);
+            grid_pan.add(lab_month_mny,0,3);
+            grid_pan.add(schema,0,4);
+            grid_pan.add(combo_type,1,4);
+            grid_pan.add(btn_res,1,5);
+        }
+        // если выбрано Аннуитетная
+        else if(select == 2){
+            // Установка видемости текставых полей
+            lab_one_mny.setVisible(true);
+            onceCommissionAmount.setVisible(true);
+            iab_one_pr.setVisible(true);
+            onceCommissionPercent.setVisible(true);
+            lab_month_mny.setVisible(false);
+            monthlyCommissionAmount.setVisible(false);
+            monthlyCommissionAmount.setText("");
+            lab_month_pr.setVisible(true);
+            monthlyCommissionPercent.setVisible(true);
+
+            // Перестановка мест компонентов
+            grid_pan.getChildren().removeAll(monthlyCommissionAmount,
+                    lab_month_mny,schema,combo_type,btn_res,onceCommissionPercent,
+                    iab_one_pr,onceCommissionAmount,lab_one_mny,monthlyCommissionPercent,
+                    lab_month_pr);
+            grid_pan.add(onceCommissionPercent,1,3);
+            grid_pan.add(iab_one_pr,0,3);
+            grid_pan.add(onceCommissionAmount,1,4);
+            grid_pan.add(lab_one_mny,0,4);
+            grid_pan.add(monthlyCommissionPercent,1,5);
+            grid_pan.add(lab_month_pr,0,5);
+            grid_pan.add(schema,0,6);
+            grid_pan.add(combo_type,1,6);
+            grid_pan.add(btn_res,1,7);
+        }
+        // если не чего выбрано
+        else if(select == 0){
+            // Установка видемости текставых полей
+            lab_one_mny.setVisible(false);
+            onceCommissionAmount.setVisible(false);
+            iab_one_pr.setVisible(false);
+            onceCommissionPercent.setVisible(false);
+            lab_month_mny.setVisible(false);
+            monthlyCommissionAmount.setVisible(false);
+            lab_month_pr.setVisible(false);
+            monthlyCommissionPercent.setVisible(false);
+
+            // Перестановка мест компонентов
+            grid_pan.getChildren().removeAll(monthlyCommissionAmount,
+                    lab_month_mny,schema,combo_type,btn_res,onceCommissionPercent,
+                    iab_one_pr,onceCommissionAmount,lab_one_mny,monthlyCommissionPercent,
+                    lab_month_pr);
+            grid_pan.add(schema,0,3);
+            grid_pan.add(combo_type,1,3);
+            grid_pan.add(btn_res,1,4);
+        }
+    }
 }
