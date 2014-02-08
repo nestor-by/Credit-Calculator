@@ -14,7 +14,7 @@ public class Constants {
     public static int CALC_SCALE = 64;
 
     // метод округления, используемый при расчетах
-    public static RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
+    public static RoundingMode ROUNDING_MODE = RoundingMode.CEILING;
 
     // количество знаков после запятой, выводимых в результат расчета для сумм
     public static int OUTPUT_AMOUNT_SCALE = 2;

@@ -51,7 +51,7 @@ class FinUtil {
         //Расчет суммы платежа без комиссии
         BigDecimal amount = creditAmount.multiply(monthlyRate).divide(
                 denominator,
-                Constants.OUTPUT_AMOUNT_SCALE,
+                Constants.CALC_SCALE,
                 Constants.ROUNDING_MODE
         );
 
@@ -76,19 +76,21 @@ class FinUtil {
 
             //Создаем объект платежа по кредиту с суммой платежа с учетом комисии, если она существует.
             CreditPayment payment = new CreditPaymentImpl(withCommAmount.setScale(
-                    Constants.OUTPUT_AMOUNT_SCALE),date
+                    Constants.CALC_SCALE,
+                    Constants.ROUNDING_MODE)
+                    ,date
             );
 
             //Добавляем и округляем Основной долг, разница между суммой платежа и начисленными процентами
             payment.setDebt(amount.subtract(interest).setScale(
-                    Constants.OUTPUT_AMOUNT_SCALE,
+                    Constants.CALC_SCALE,
                     Constants.ROUNDING_MODE
                 )
             );
 
             //Добавляем и Округляем остаток с начисленными процентами
             payment.setInterest(
-                    interest.setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                    interest.setScale(Constants.CALC_SCALE,
                     Constants.ROUNDING_MODE)
             );
 
@@ -98,14 +100,14 @@ class FinUtil {
 
             //Добавляем Остаток на следующий месяц
             payment.setTotalLeft(base.setScale(
-                    Constants.OUTPUT_AMOUNT_SCALE,
+                    Constants.CALC_SCALE,
                     Constants.ROUNDING_MODE)
             );
 
             //Если комиссия существует, то добавляем её
             if (monthlyCommission != null) {
                 payment.setCommission(monthlyCommission.setScale(
-                        Constants.OUTPUT_AMOUNT_SCALE,
+                        Constants.CALC_SCALE,
                         Constants.ROUNDING_MODE
                     )
                 );
@@ -164,7 +166,7 @@ class FinUtil {
             date = CalendarUtil.nextMonthDate(date);
             CreditPayment payment
                     = new CreditPaymentImpl(withCommAmount
-                    .setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                    .setScale(Constants.CALC_SCALE,
                             Constants.ROUNDING_MODE),
                     date);
             payment.setDebt(creditAmount
@@ -184,7 +186,7 @@ class FinUtil {
                             Constants.ROUNDING_MODE));
             if (monthlyCommission != null) {
                 payment.setCommission(monthlyCommission
-                        .setScale(Constants.OUTPUT_AMOUNT_SCALE,
+                        .setScale(Constants.CALC_SCALE,
                                 Constants.ROUNDING_MODE));
             }
                     payments.add(payment);
@@ -194,7 +196,7 @@ class FinUtil {
     }
 
     static BigDecimal calcTotalAmount(final List<CreditPayment> payments) {
-        BigDecimal totalAmount = new BigDecimal(0);
+        BigDecimal totalAmount = new BigDecimal(0).setScale(Constants.CALC_SCALE, Constants.ROUNDING_MODE);
         for (CreditPayment payment : payments) {
             totalAmount = totalAmount.add(payment.getAmount());
         }
@@ -217,14 +219,14 @@ class FinUtil {
         BigDecimal monCommPercent = creditOffer.getMonthlyCommissionPercent();
 
         BigDecimal monComm = new BigDecimal(0)
-                .setScale(Constants.OUTPUT_AMOUNT_SCALE);
+                .setScale(Constants.CALC_SCALE, Constants.ROUNDING_MODE);
         if (monCommAmount != null) {
             monComm = monComm.add(monCommAmount);
         }
         if (monCommPercent != null) {
             monComm = monComm.add(creditAmount.multiply(monCommPercent));
         }
-        return monComm.setScale(Constants.OUTPUT_AMOUNT_SCALE);
+        return monComm.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE);
     }
 
     /**
@@ -247,7 +249,7 @@ class FinUtil {
         if (onceCommPrcnt != null) {
             initCommPay = initCommPay.add(creditAmount.multiply(onceCommPrcnt));
         }
-        return initCommPay.setScale(Constants.OUTPUT_AMOUNT_SCALE);
+        return initCommPay.setScale(Constants.OUTPUT_AMOUNT_SCALE, Constants.ROUNDING_MODE);
     }
 
     /**
@@ -296,7 +298,7 @@ class FinUtil {
             currentEps = Math.abs(previousER - er);
         }
 
-        return new BigDecimal(er).setScale(Constants.OUTPUT_PERCENT_SCALE,
+        return new BigDecimal(er).setScale(Constants.CALC_SCALE,
                                            Constants.ROUNDING_MODE);
     }
 }
