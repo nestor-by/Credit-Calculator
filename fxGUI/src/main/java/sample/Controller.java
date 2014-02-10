@@ -99,8 +99,8 @@ public class Controller {
         model.addAll("Аннуитетная", "Дифференцированная");
         combo_type.setPrefSize(298, 28);
         combo_type.setItems(model); // Добавление данные схем погашения
-        //combo_type.getSelectionModel().select(0); // Начальная состояния "Аннуитетная"
-        selectType(0); // ночальная положения компонентов
+        combo_type.getSelectionModel().select(0); // Начальная состояния "Аннуитетная"
+        selectType(2); // ночальная положения компонентов
 
         combo_type.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -284,7 +284,7 @@ public class Controller {
      */
     private void selectType(int select){
         // если выбрано Дифференцированная
-        if(select == 1){
+        if(select == 2){
             // Установка видемости текставых полей
             lab_one_mny.setVisible(false);
             onceCommissionAmount.setVisible(false);
@@ -311,7 +311,7 @@ public class Controller {
             grid_pan.add(btn_res,1,5);
         }
         // если выбрано Аннуитетная
-        else if(select == 2){
+        else if(select == 1){
             // Установка видемости текставых полей
             lab_one_mny.setVisible(true);
             onceCommissionAmount.setVisible(true);
