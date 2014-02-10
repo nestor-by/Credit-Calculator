@@ -21,7 +21,7 @@ public class HelpDialog {
         engine.load(String.valueOf(Thread.currentThread().getContextClassLoader().getResource("html/help.html")));
         root.getChildren().add(view); // Добавление панели в веб компонент
 
-        Scene scene = new Scene(root, 800, 600); // Установка размера окна
+        Scene scene = new Scene(root, 700, 500); // Установка размера окна
         stage.setScene(scene); // Добавление сцены в окно
         stage.show(); // Вывод окна
     }
