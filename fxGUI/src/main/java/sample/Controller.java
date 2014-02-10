@@ -100,16 +100,16 @@ public class Controller {
         combo_type.setPrefSize(298, 28);
         combo_type.setItems(model); // Добавление данные схем погашения
         combo_type.getSelectionModel().select(0); // Начальная состояния "Аннуитетная"
-        selectType(2); // ночальная положения компонентов
+        selectType(true); // ночальная положения компонентов
 
         combo_type.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String s2) {
                 if(s2.equals("Дифференцированная")){
-                    selectType(1);
+                    selectType(false);
                 }
                 else {
-                    selectType(2);
+                    selectType(true);
                 }
             }
         });
@@ -156,7 +156,7 @@ public class Controller {
     @FXML
     public void onClickMethod(){
         creditData.clear(); // Очистка таблицы
-        if(control(amount) && control(durationInMonths) && control(interestRate) && !combo_type.getSelectionModel().isSelected(-1)){ // Если все три поле числа то..
+        if(control(amount) && control(durationInMonths) && control(interestRate)){ // Если все три поле числа то..
             application = new CreditApplicationImpl(new BigDecimal(amount.getText())); // Возвращение текста сумма кредита в расчет
             application.setDurationInMonths(Integer.valueOf(durationInMonths.getText())); // Возвращение текста срок кредита в расчет
             offer = new CreditOfferImpl();
@@ -282,9 +282,9 @@ public class Controller {
      * @return Метод расстановки компонентов в зависемости comboBox
      * @param select - индекатор расположения
      */
-    private void selectType(int select){
+    private void selectType(Boolean select){
         // если выбрано Дифференцированная
-        if(select == 2){
+        if(select){
             // Установка видемости текставых полей
             lab_one_mny.setVisible(false);
             onceCommissionAmount.setVisible(false);
@@ -311,7 +311,7 @@ public class Controller {
             grid_pan.add(btn_res,1,5);
         }
         // если выбрано Аннуитетная
-        else if(select == 1){
+        else {
             // Установка видемости текставых полей
             lab_one_mny.setVisible(true);
             onceCommissionAmount.setVisible(true);
@@ -337,27 +337,6 @@ public class Controller {
             grid_pan.add(schema,0,6);
             grid_pan.add(combo_type,1,6);
             grid_pan.add(btn_res,1,7);
-        }
-        // если не чего выбрано
-        else if(select == 0){
-            // Установка видемости текставых полей
-            lab_one_mny.setVisible(false);
-            onceCommissionAmount.setVisible(false);
-            iab_one_pr.setVisible(false);
-            onceCommissionPercent.setVisible(false);
-            lab_month_mny.setVisible(false);
-            monthlyCommissionAmount.setVisible(false);
-            lab_month_pr.setVisible(false);
-            monthlyCommissionPercent.setVisible(false);
-
-            // Перестановка мест компонентов
-            grid_pan.getChildren().removeAll(monthlyCommissionAmount,
-                    lab_month_mny,schema,combo_type,btn_res,onceCommissionPercent,
-                    iab_one_pr,onceCommissionAmount,lab_one_mny,monthlyCommissionPercent,
-                    lab_month_pr);
-            grid_pan.add(schema,0,3);
-            grid_pan.add(combo_type,1,3);
-            grid_pan.add(btn_res,1,4);
         }
     }
 }
