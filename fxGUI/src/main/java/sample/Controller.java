@@ -87,6 +87,7 @@ public class Controller {
     @FXML
     private Label lab_month_mny;// Текст Ежемесячная комиссия (в деньгах)
 
+
     /**
      * @return Метод для начальной инициализации данных {@link #initialize()}
      */
@@ -247,6 +248,8 @@ public class Controller {
             if(d < 0) tf.setText(""+Math.abs(d)); // Если введен отрицательный число то берется по модулю
         }
         catch (NumberFormatException e){
+            tf.setText("");
+            tf.setPromptText("Введите число");
             return false;
         }
         return true;
