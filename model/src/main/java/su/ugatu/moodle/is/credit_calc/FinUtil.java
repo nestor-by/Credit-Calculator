@@ -123,75 +123,101 @@ class FinUtil {
             return payments;
     }
 
-
+    /**
+     * Рассчитать платежи по кредиту по дифференцированной схеме.
+     *
+     * @param creditAmount размер кредита.
+     * @param durationInMonths продолжительность в месяцах.
+     * @param date дата.
+     * @param rate ставка кредита в долях от единицы.
+     * @param monthlyCommission ежемесячная комиссия.
+     * @return упорядоченный по дате список платежей по кредиту.
+     */
     static List<CreditPayment> calcDifferentialPayments(final BigDecimal creditAmount,
                                           final int durationInMonths,
                                           Date date,
                                           final BigDecimal rate,
                                           final BigDecimal monthlyCommission) {
-
+        //Формула расчета платежа по дифференцированной схеме
+        //A = (1 / n + L / 12) * S - (S * L / 12) / n * (k - 1)
+        //amount = (1 / durationInMonths + monthlyRate) * creditAmount
+        // - (creditAmount * monthlyRate / durationInMonthsBD) * (k - 1);
         ArrayList<CreditPayment> payments = new ArrayList<CreditPayment>();
-
+        //Ежемесячная процентная ставка по кредиту   L / 12
         BigDecimal monthlyRate = rate.divide(
                 new BigDecimal(CalendarUtil.NUMBER_OF_MONTHS),
                 Constants.CALC_SCALE, Constants.ROUNDING_MODE);
         BigDecimal durationInMonthsBD = new BigDecimal(durationInMonths);
+        //Устанавливаем остаток равным размеру кредита
         BigDecimal base = creditAmount;
 
         for (int k = 1; k <= durationInMonths; k++) {
+            //процентная часть платежа
             BigDecimal interest = base.multiply(monthlyRate);
+            //добавляем к остатку
             base = base.add(interest);
-
+            //первое слагаемое в формуле
+            //(1 / n + L / 12) * S
             BigDecimal firstSum = new BigDecimal(1)
                     .divide(durationInMonthsBD,
                             Constants.CALC_SCALE,
                             Constants.ROUNDING_MODE);
 
             firstSum = firstSum.add(monthlyRate).multiply(creditAmount);
-
+            //первое слагаемое в формуле
+            //(S * L / 12) / n * (k - 1)
             BigDecimal secondSum = creditAmount
                     .multiply(monthlyRate)
                     .divide(durationInMonthsBD,
                             Constants.CALC_SCALE,
                             Constants.ROUNDING_MODE)
                     .multiply(new BigDecimal(k - 1));
-
+            //второе слагаемое в формуле
+            //будет вычислено в 0 для первого платежа, так как k-1=0 при k=1
+            //A = (1 / n + L / 12) * S - (S * L / 12) / n * (k - 1)
             BigDecimal amount = firstSum.subtract(secondSum);
 
+            //Если есть ежемесячная комиссия, учесть ее в размере платежа
             BigDecimal withCommAmount = amount;
             if (monthlyCommission != null) {
                 withCommAmount = withCommAmount.add(monthlyCommission);
             }
 
+            //следующая дата платежа
             date = CalendarUtil.nextMonthDate(date);
             CreditPayment payment
                     = new CreditPaymentImpl(withCommAmount
                     .setScale(Constants.CALC_SCALE,
                             Constants.ROUNDING_MODE),
                     date);
+            //долговая часть платежа: creditAmount/durationInMonths
             payment.setDebt(creditAmount
                     .divide(durationInMonthsBD,
                             Constants.CALC_SCALE,
                             Constants.ROUNDING_MODE)
                     .setScale(Constants.OUTPUT_AMOUNT_SCALE,
                             Constants.ROUNDING_MODE));
-
+            //вычитаем от остатка размер платежа
             base = base.subtract(amount);
+
+            //процентная часть платежа
             payment.setInterest(interest
                     .setScale(Constants.OUTPUT_AMOUNT_SCALE,
                             Constants.ROUNDING_MODE));
-
+            //остаток на следующий месяц
             payment.setTotalLeft(base
                     .setScale(Constants.OUTPUT_AMOUNT_SCALE,
                             Constants.ROUNDING_MODE));
+            //размер ежемесячной комиссии
             if (monthlyCommission != null) {
                 payment.setCommission(monthlyCommission
                         .setScale(Constants.CALC_SCALE,
                                 Constants.ROUNDING_MODE));
             }
-                    payments.add(payment);
+            //добавляем данный платеж в список платежей
+            payments.add(payment);
         }
-
+        //возвращаем список платежей
         return payments;
     }
 
