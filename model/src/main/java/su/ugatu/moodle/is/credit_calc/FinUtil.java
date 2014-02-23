@@ -76,10 +76,7 @@ class FinUtil {
 
             //Создаем объект платежа по кредиту с суммой платежа с учетом комисии, если она существует.
             CreditPayment payment = new CreditPaymentImpl(withCommAmount.setScale(
-                    Constants.CALC_SCALE,
-                    Constants.ROUNDING_MODE)
-                    ,date
-            );
+                    Constants.CALC_SCALE,Constants.ROUNDING_MODE),date);
 
             //Добавляем и округляем Основной долг, разница между суммой платежа и начисленными процентами
             payment.setDebt(amount.subtract(interest).setScale(
@@ -117,8 +114,6 @@ class FinUtil {
             payments.add(payment);
 
         }
-
-            //makeLastPaymentZero(payments);
 
             return payments;
     }
