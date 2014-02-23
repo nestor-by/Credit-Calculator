@@ -34,7 +34,7 @@ public interface CreditProposal {
     /**
      * @return исходная комиссия, не включаемая в ежемесячные платежи.
      */
-    BigDecimal getInitialCreditCommission();
+    BigDecimal getInitialCommission();
     /**
      * @return полная комиссия, включая ежемесячные коммиссии.
      */

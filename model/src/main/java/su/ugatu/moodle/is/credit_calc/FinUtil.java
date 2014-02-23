@@ -264,15 +264,15 @@ class FinUtil {
         final double eps = 0.00001d; // погрешность
         // начальное значение множителя дисконирования
         double x = 1d;
-        double currentEps = 1.0d;    // текущая погрешность
+        double currentEps = 1d;    // текущая погрешность
         double er = 0d;              // эффективная процентная ставка
+        final int paymentCount = proposal.getPayments().size();
 
         while (currentEps > eps) {
 
             // 1. Инициализация переменных
             double fx = 0d;
             double dfx = 0d;
-            final int paymentCount = proposal.getPayments().size();
 
             // 2. Цикл для вычисления сумм в функции и производной в точке х
             for (int i = 1; i <= paymentCount; i++) {
@@ -284,8 +284,8 @@ class FinUtil {
             // 3. Для функции f(x) вычтем размер кредита
             fx -= proposal.getCreditAmount().doubleValue();
             //    и добавим первоначальную комиссию
-            if (proposal.getInitialCreditCommission() != null) {
-                fx += proposal.getInitialCreditCommission().doubleValue();
+            if (proposal.getInitialCommission() != null) {
+                fx += proposal.getInitialCommission().doubleValue();
             }
 
             // 4. Шаг при поиске корня методом Ньютона

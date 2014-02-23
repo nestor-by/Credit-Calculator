@@ -17,7 +17,7 @@ public class TestUtil {
         System.out.println("Total: "
            + proposal.getTotalPayment());
         System.out.println("Initial commission: "
-           + proposal.getInitialCreditCommission());
+           + proposal.getInitialCommission());
         System.out.println("Effective rate: "
            + proposal.getEffectiveRate());
 
