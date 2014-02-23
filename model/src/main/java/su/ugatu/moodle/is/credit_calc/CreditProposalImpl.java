@@ -91,7 +91,7 @@ class CreditProposalImpl implements CreditProposal {
     }
 
     @Override
-    public BigDecimal getInitialCreditCommission() {
+    public BigDecimal getInitialCommission() {
         return initCredComm;
     }
     public BigDecimal getTotalCreditCommission() {
