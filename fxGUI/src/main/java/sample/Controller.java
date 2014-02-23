@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- * @return Этот класс контролируете все событии и действия пользователя
+ * @return Этот класс контролируете все события и действия пользователя
  * {@link Controller}
  */
 public class Controller {
