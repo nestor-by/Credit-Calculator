@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static by.nestor.credit.Constants.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -27,11 +28,15 @@ public class CreditProposalBuilderTest {
 
         List<CreditPayment> payments = proposal.getPayments();
         assertTrue(payments.size() == app.getDuration());
-        assertEquals(Constants.round(proposal.getEffectiveRate(), Constants.OUTPUT_PERCENT_SCALE), new BigDecimal(0.1838));
-        assertEquals(Constants.round(proposal.getTotalPayment(), Constants.OUTPUT_AMOUNT_SCALE), new BigDecimal(109440.01));
+        assertScaleEquals(proposal.getEffectiveRate(), new BigDecimal(0.1838), OUTPUT_PERCENT_SCALE);
+        assertScaleEquals(proposal.getTotalPayment(), new BigDecimal(109440.01), OUTPUT_AMOUNT_SCALE);
+        BigDecimal actual = new BigDecimal(9120.00);
         for (CreditPayment payment : payments) {
-            assertEquals(Constants.round(payment.getAmount(), Constants.OUTPUT_AMOUNT_SCALE), new BigDecimal(9120));
+            assertScaleEquals(payment.getAmount(), actual, OUTPUT_AMOUNT_SCALE);
         }
+    }
 
+    private void assertScaleEquals(BigDecimal expected, BigDecimal actual, int scale) {
+        assertEquals(round(expected, scale), round(actual, scale));
     }
 }

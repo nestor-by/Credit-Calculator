@@ -45,7 +45,7 @@ public class CommissionTest {
         application.setPaymentType(CreditPaymentType.ANNUITY);
         TestUtil.printApplication(application);
         CreditProposal proposal = offer.calculateProposal(application);
-        assertEquals(proposal.getEffectiveRate(), (new BigDecimal("0.5069")));
+        assertEquals(proposal.getEffectiveRate(), (new BigDecimal("0.5068")));
 
         TestUtil.printProposal(proposal);
     }
@@ -54,7 +54,7 @@ public class CommissionTest {
     public void differentialCommissionTest() {
         application.setPaymentType(CreditPaymentType.DIFFERENTIAL);
         CreditProposal proposal = offer.calculateProposal(application);
-        assertEquals(proposal.getEffectiveRate(), new BigDecimal("0.5153"));
+        assertEquals(proposal.getEffectiveRate(), new BigDecimal("0.5152"));
         TestUtil.printProposal(proposal);
     }
 }
