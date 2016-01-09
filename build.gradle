@@ -1,0 +1,14 @@
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java'
+    group 'by.nestor.credit'
+    sourceCompatibility = 1.8
+}
+
+
