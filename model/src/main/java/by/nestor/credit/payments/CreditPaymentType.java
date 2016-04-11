@@ -8,6 +8,7 @@ package by.nestor.credit.payments;
  *         Time: 20:48
  */
 public enum CreditPaymentType {
+    GRACE_PERIOD,      // грейс период
     ANNUITY,      // аннуитетная схема
     DIFFERENTIAL  // дифференциальная схема
 }

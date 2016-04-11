@@ -15,9 +15,7 @@ public class WithoutBanksCalcTest {
     @Test
     public void withoutBanksTest() {
         CreditApplication app = new CreditApplicationImpl(new BigDecimal("100000"));
-        app.setDuration(12);
-        app.setPaymentType(CreditPaymentType.ANNUITY);
-
+        app.setDurations(new Duration(12, new Frequency(1, TimeUnit.MONTHLY), CreditPaymentType.ANNUITY));
         CreditOffer offer = new CreditOfferImpl();
         offer.setRate(new BigDecimal("0.1699"));
 

@@ -4,21 +4,23 @@ import by.nestor.credit.payments.CreditPaymentType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Реализация заявки на кредит.
  *
  * @author rinat.enikeev@gmail.com
- * Date: 13.01.14
- * Time: 18:50
+ *         Date: 13.01.14
+ *         Time: 18:50
  */
 public class CreditApplicationImpl implements CreditApplication {
 
-    private final BigDecimal amount;       // размер кредита
-    private String currency;               // валюта кредита (ISO 4217)
-    private CreditPaymentType paymentType; // тип платежа (аннуитет, дифф.)
-    private Integer durationInMonths;      // срок кредита в месяцах
-    private LocalDate startDate;                // дата получения кредита
+    private final BigDecimal amount;        // размер кредита
+    private String currency;                // валюта кредита (ISO 4217)
+    private CreditPaymentType paymentType;  // тип платежа (аннуитет, дифф.)
+    private List<Duration> durations;       // срок кредита в месяцах
+    private LocalDate startDate;            // дата получения кредита
 
     public CreditApplicationImpl(final BigDecimal anAmount) {
         this.amount = anAmount;
@@ -41,25 +43,19 @@ public class CreditApplicationImpl implements CreditApplication {
     }
 
     @Override
-    public CreditPaymentType getPaymentType() {
-        return paymentType;
+    public List<Duration> getDurations() {
+        return durations;
     }
 
     @Override
-    public CreditApplication setPaymentType(CreditPaymentType aPaymentType) {
-        this.paymentType = aPaymentType;
+    public CreditApplication setDurations(List<Duration> durations) {
+        this.durations = durations;
         return this;
     }
 
     @Override
-    public Integer getDuration() {
-        return durationInMonths;
-    }
-
-    @Override
-    public CreditApplication setDuration(Integer aDurationInMonths) {
-        this.durationInMonths = aDurationInMonths;
-        return this;
+    public CreditApplication setDurations(Duration... durations) {
+        return setDurations(Arrays.asList(durations));
     }
 
     @Override

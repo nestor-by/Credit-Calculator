@@ -28,21 +28,20 @@ public class CommissionTest {
     public void setUp() {
         BigDecimal amount = new BigDecimal(100000).setScale(Constants.OUTPUT_AMOUNT_SCALE);
         application = new CreditApplicationImpl(amount);
-        application.setDuration(12);
 
         offer = new CreditOfferImpl();
         offer.setRate(new BigDecimal("0.1699").setScale(Constants.OUTPUT_PERCENT_SCALE));
         offer.setCommissions(
                 new Commission(AMOUNT, new BigDecimal("100").setScale(Constants.OUTPUT_AMOUNT_SCALE)),
                 new Commission(PERCENT, new BigDecimal("0.01").setScale(Constants.OUTPUT_PERCENT_SCALE)),
-                new Commission(AMOUNT, Frequency.MONTHLY, new BigDecimal("100").setScale(Constants.OUTPUT_AMOUNT_SCALE)),
-                new Commission(PERCENT, Frequency.MONTHLY, new BigDecimal("0.01").setScale(Constants.OUTPUT_PERCENT_SCALE))
+                new Commission(AMOUNT, new Frequency(1, TimeUnit.MONTHLY), new BigDecimal("100").setScale(Constants.OUTPUT_AMOUNT_SCALE)),
+                new Commission(PERCENT, new Frequency(1, TimeUnit.MONTHLY), new BigDecimal("0.01").setScale(Constants.OUTPUT_PERCENT_SCALE))
         );
     }
 
     @Test
     public void annuityCommissionTest() {
-        application.setPaymentType(CreditPaymentType.ANNUITY);
+        application.setDurations(new Duration(12, new Frequency(1, TimeUnit.MONTHLY), CreditPaymentType.ANNUITY));
         TestUtil.printApplication(application);
         CreditProposal proposal = offer.calculateProposal(application);
         assertEquals(proposal.getEffectiveRate(), (new BigDecimal("0.5068")));
@@ -52,7 +51,7 @@ public class CommissionTest {
 
     @Test
     public void differentialCommissionTest() {
-        application.setPaymentType(CreditPaymentType.DIFFERENTIAL);
+        application.setDurations(new Duration(12, new Frequency(1, TimeUnit.MONTHLY), CreditPaymentType.DIFFERENTIAL));
         CreditProposal proposal = offer.calculateProposal(application);
         assertEquals(proposal.getEffectiveRate(), new BigDecimal("0.5152"));
         TestUtil.printProposal(proposal);

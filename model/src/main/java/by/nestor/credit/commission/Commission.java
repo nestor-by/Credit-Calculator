@@ -12,9 +12,9 @@ import static by.nestor.credit.Constants.round;
  * Created by yuryvoschilo on 1/9/16.
  */
 public class Commission {
-    public final CommissionType type;
-    public final Frequency frequency;
-    public final BigDecimal value;
+    private final CommissionType type;
+    private final Frequency frequency;
+    private final BigDecimal value;
 
     public Commission(final CommissionType type, final BigDecimal value) {
         this(type, null, value);
@@ -24,6 +24,18 @@ public class Commission {
         this.type = type;
         this.frequency = frequency;
         this.value = value;
+    }
+
+    public CommissionType getType() {
+        return type;
+    }
+
+    public Frequency getFrequency() {
+        return frequency;
+    }
+
+    public BigDecimal getValue() {
+        return value;
     }
 
     public BigDecimal calculate(final CreditApplication application) {

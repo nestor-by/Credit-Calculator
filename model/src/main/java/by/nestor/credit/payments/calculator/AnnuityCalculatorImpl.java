@@ -1,6 +1,7 @@
 package by.nestor.credit.payments.calculator;
 
 import by.nestor.credit.Constants;
+import by.nestor.credit.Duration;
 import by.nestor.credit.payments.CreditPayment;
 import by.nestor.credit.payments.CreditPaymentImpl;
 
@@ -18,28 +19,24 @@ public class AnnuityCalculatorImpl implements PaymentsCalculator {
      * Рассчитать платежи по кредиту по аннуитетной схеме.
      *
      * @param creditAmount      размер кредита.
-     * @param durationInMonths  продолжительность в месяцах.
+     * @param duration  продолжительность в месяцах.
      * @param date              дата.
      * @param rate              ставка кредита в долях от единицы.
      * @param monthlyCommission ежемесячная комиссия.
      * @return упорядоченный по дате список платежей по кредиту.
      */
     public List<CreditPayment> calculate(final BigDecimal creditAmount,
-                                         final int durationInMonths,
+                                         final Duration duration,
                                          LocalDate date,
                                          final BigDecimal rate,
                                          final BigDecimal monthlyCommission) {
         ArrayList<CreditPayment> payments = new ArrayList<CreditPayment>();
         // Формула расчета платежа по аннуитетной схеме A = (L / 12) / (1 - (1 + (l / 12)) ^ -n )
         // месячная ставка по кредиту   L / 12
-        BigDecimal monthlyRate = rate.divide(
-                new BigDecimal(Constants.NUMBER_OF_MONTHS),
-                Constants.CALC_SCALE,
-                Constants.ROUNDING_MODE
-        );
+        BigDecimal monthlyRate = rate.multiply(BigDecimal.valueOf(duration.frequency.days()));
 
         //  1 + (l / 12) ^ -n
-        BigDecimal pow = monthlyRate.add(BigDecimal.ONE).pow(-durationInMonths, MathContext.DECIMAL64);
+        BigDecimal pow = monthlyRate.add(BigDecimal.ONE).pow(-duration.value, MathContext.DECIMAL64);
 
         BigDecimal denominator = BigDecimal.ONE;
 
@@ -62,13 +59,13 @@ public class AnnuityCalculatorImpl implements PaymentsCalculator {
 
         BigDecimal base = creditAmount; //Сумма кредита
 
-        for (int i = 0; i < durationInMonths; i++) {
+        for (int i = 0; i < duration.value; i++) {
             //Начисленные проценты
             BigDecimal interest = base.multiply(monthlyRate);
 
             //Создаем объект платежа по кредиту с суммой платежа с учетом комисии, если она существует.
             BigDecimal paymentAmount = Constants.round(withCommAmount, Constants.CALC_SCALE);
-            CreditPayment payment = new CreditPaymentImpl(paymentAmount, date = date.plusMonths(1));
+            CreditPayment payment = new CreditPaymentImpl(paymentAmount, date = duration.frequency.next(date));
 
             //Добавляем и округляем Основной долг, разница между суммой платежа и начисленными процентами
             payment.setDebt(Constants.round(amount.subtract(interest), Constants.CALC_SCALE));

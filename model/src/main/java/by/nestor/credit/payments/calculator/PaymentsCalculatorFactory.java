@@ -8,6 +8,9 @@ import by.nestor.credit.payments.CreditPaymentType;
 public class PaymentsCalculatorFactory {
     public static PaymentsCalculator factory(CreditPaymentType type) {
         switch (type) {
+            case GRACE_PERIOD: {
+                return new GracePeriodCalculatorImpl();
+            }
             case ANNUITY: {
                 return new AnnuityCalculatorImpl();
             }

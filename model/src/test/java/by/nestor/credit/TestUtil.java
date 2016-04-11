@@ -20,6 +20,7 @@ public class TestUtil {
         System.out.println("Initial commission: " + proposal.getInitialCommission());
         System.out.println("Effective rate: " + proposal.getEffectiveRate());
 
+        System.out.println("date; amount; debt; interest; commission; total left;");
         for (CreditPayment payment : payments) {
             System.out.print(payment.getDate() + "; ");
             System.out.print(round(payment.getAmount(), OUTPUT_AMOUNT_SCALE) + ";\t ");
@@ -34,7 +35,7 @@ public class TestUtil {
     public static void printApplication(final CreditApplication application) {
         System.out.println("Application: ");
         System.out.println("\tAmount: " + round(application.getAmount(), OUTPUT_AMOUNT_SCALE));
-        System.out.println("\t" + application.getDuration());
+        System.out.println("\t" + application.getDurations());
 
     }
 }

@@ -1,5 +1,6 @@
 package by.nestor.credit.payments.calculator;
 
+import by.nestor.credit.Duration;
 import by.nestor.credit.payments.CreditPayment;
 
 import java.math.BigDecimal;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public interface PaymentsCalculator {
     List<CreditPayment> calculate(final BigDecimal creditAmount,
-                                  final int durationInMonths,
+                                  final Duration duration,
                                   LocalDate date,
                                   final BigDecimal rate,
                                   final BigDecimal monthlyCommission);

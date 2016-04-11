@@ -1,9 +1,8 @@
 package by.nestor.credit;
 
-import by.nestor.credit.payments.CreditPaymentType;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Заявка на получение кредита.
@@ -32,29 +31,18 @@ public interface CreditApplication {
     CreditApplication setCurrency(final String currency);
 
     /**
-     * @return тип отплаты кредита (например, аннуитет или дифференцированный)
-     */
-    CreditPaymentType getPaymentType();
-
-    /**
-     * Установить тип оплаты кредита (нопример, аннуитет или дифф.).
-     *
-     * @param paymentType тип платежа.
-     * @return заявка на кредит.
-     */
-    CreditApplication setPaymentType(final CreditPaymentType paymentType);
-
-    /**
      * @return срок кредита в месяцах.
      */
-    Integer getDuration();
+    List<Duration> getDurations();
+
+    CreditApplication setDurations(final Duration... durations);
 
     /**
      * Установить срок выплаты кредита в месяцах.
-     * @param durationInMonths количество месяцев.
+     * @param durations количество месяцев.
      * @return заявка на кредит, в целях fluent interface.
      */
-    CreditApplication setDuration(final Integer durationInMonths);
+    CreditApplication setDurations(final List<Duration> durations);
 
     /**
      * @return день, в который планируется получить кредит.

@@ -26,7 +26,7 @@ public class CreditOfferImpl implements CreditOffer {
     private String currencyName;
     private Interval<BigDecimal> amount;
     private Interval<Integer> duration;
-    private Frequency frequency = Frequency.MONTHLY;
+    private Frequency frequency;
     private Collection<Commission> commissions = Collections.emptyList();
 
     @Override
@@ -104,14 +104,11 @@ public class CreditOfferImpl implements CreditOffer {
      * @param creditApplication incoming application
      */
     private void configureApplicationBlankParams(final CreditApplication creditApplication) {
-        if (creditApplication.getPaymentType() == null) {
-            creditApplication.setPaymentType(DEFAULT_PAYMENT_TYPE);
-        }
         if (creditApplication.getCurrency() == null) {
             creditApplication.setCurrency(getCurrency());
         }
-        if (creditApplication.getDuration() == null) {
-            creditApplication.setDuration(this.duration.max);
+        if (creditApplication.getDurations() == null) {
+            creditApplication.setDurations(new Duration(this.duration.max, frequency, DEFAULT_PAYMENT_TYPE));
         }
         if (creditApplication.getStartDate() == null) {
             creditApplication.setStartDate(LocalDate.now());
@@ -129,9 +126,11 @@ public class CreditOfferImpl implements CreditOffer {
         BigDecimal amount = creditApplication.getAmount();
         if (amount != null && this.amount != null && !this.amount.inBounds(amount))
             return false;
-        Integer duration = creditApplication.getDuration();
-        if (duration != null && this.duration != null && !this.duration.inBounds(duration))
-            return false;
+        List<Duration> durations = creditApplication.getDurations();
+        for (Duration duration : durations) {
+            if (duration != null && this.duration != null && !this.duration.inBounds(duration.value))
+                return false;
+        }
 
         String currency = creditApplication.getCurrency();
         return !(currency != null
